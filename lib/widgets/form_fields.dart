@@ -23,6 +23,7 @@ class FormFields {
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
           )),
+      obscureText: obscueText,
     );
   }
 }
