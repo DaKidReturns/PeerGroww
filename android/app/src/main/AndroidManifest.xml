@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.campus365.campus365">
    <application
-        android:label="campus365"
+        android:label="PeerGroww"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
