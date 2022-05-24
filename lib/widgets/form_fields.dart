@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 class FormFields {
-  static textField1({required String hintText}) {
+  static textField1({required String hintText, required bool obscueText}) {
+    
     return TextFormField(
       style: TextStyle(color: Colors.white),
       decoration: InputDecoration(

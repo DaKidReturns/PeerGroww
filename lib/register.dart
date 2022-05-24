@@ -53,15 +53,18 @@ class _MyRegisterState extends State<MyRegister> {
                         key: _formKey,
                         child: Column(
                           children: [
-                            FormFields.textField1(hintText: "Name"),
+                            FormFields.textField1(
+                                hintText: "Name", obscueText: false),
                             const SizedBox(
                               height: 30,
                             ),
-                            FormFields.textField1(hintText: "Email"),
+                            FormFields.textField1(
+                                hintText: "Email", obscueText: false),
                             const SizedBox(
                               height: 30,
                             ),
-                            FormFields.textField1(hintText: "Password"),
+                            FormFields.textField1(
+                                hintText: "Password", obscueText: true),
                             const SizedBox(
                               height: 40,
                             ),
@@ -80,7 +83,14 @@ class _MyRegisterState extends State<MyRegister> {
                                   backgroundColor: const Color(0xff4c505b),
                                   child: IconButton(
                                       color: Colors.white,
-                                      onPressed: () {},
+                                      onPressed: () async {
+                                        //if (_formKey.currentState!.validate()) {
+                                        dynamic result =
+                                            await _auth.regWithEmailAndPass(
+                                                email: email,
+                                                password: password);
+                                        //}
+                                      },
                                       icon: const Icon(
                                         Icons.arrow_forward,
                                       )),
