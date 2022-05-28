@@ -4,6 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'login.dart';
 import 'home.dart';
 import 'register.dart';
+import 'landing.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -16,21 +17,22 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String initRoute = 'login';
-    FirebaseAuth.instance.currentUser != null
+    String initRoute =
+        FirebaseAuth.instance.currentUser == null ? '/login' : '/home';
+    /*FirebaseAuth.instance.currentUser != null
         ? initRoute = 'home'
-        : initRoute = 'login';
+        : initRoute = 'login';*/
 
     return StreamBuilder(
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (cntxt, user) {
           return MaterialApp(
             debugShowCheckedModeBanner: false,
-            initialRoute: initRoute,
+            initialRoute: initRoute, 
             routes: {
-              'login': (content) => const MyLogin(),
-              'register': (context) => const MyRegister(),
-              'home': (context) => const Home()
+              '/login': (content) => const MyLogin(),
+              '/register': (context) => const MyRegister(),
+              '/home': (context) => const Home(),
             },
           );
         });

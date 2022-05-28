@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:peergroww/services/auth.dart';
 
 class MyLogin extends StatefulWidget {
   const MyLogin({Key? key}) : super(key: key);
@@ -8,6 +10,11 @@ class MyLogin extends StatefulWidget {
 }
 
 class _MyLoginState extends State<MyLogin> {
+  final AuthService _auth = AuthService();
+  final _formKey = GlobalKey<FormState>();
+
+  String email = '';
+  String password = '';
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -34,77 +41,101 @@ class _MyLoginState extends State<MyLogin> {
                     top: MediaQuery.of(context).size.height * 0.45,
                     right: 35,
                     left: 35),
-                child: Column(
-                  children: [
-                    TextField(
-                      decoration: InputDecoration(
-                          fillColor: Colors.grey.shade100,
-                          filled: true,
-                          hintText: 'Email',
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10))),
-                    ),
-                    const SizedBox(
-                      height: 30,
-                    ),
-                    TextField(
-                      obscureText: true,
-                      decoration: InputDecoration(
-                          fillColor: Colors.grey.shade100,
-                          filled: true,
-                          hintText: 'Password',
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10))),
-                    ),
-                    const SizedBox(
-                      height: 40,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Text('Sign In',
-                            style: TextStyle(
-                              color: Color(0xff4c505b),
-                              fontSize: 27,
-                              fontWeight: FontWeight.w700,
-                            )),
-                        CircleAvatar(
-                            radius: 30,
-                            backgroundColor: const Color(0xff4c505b),
-                            child: IconButton(
-                              color: Colors.white,
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    children: [
+                      TextFormField(
+                        decoration: InputDecoration(
+                            fillColor: Colors.grey.shade100,
+                            filled: true,
+                            hintText: 'Email',
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10))),
+                        onChanged: (val) {
+                          setState(() {
+                            email = val;
+                          });
+                        },
+                      ),
+                      const SizedBox(
+                        height: 30,
+                      ),
+                      TextField(
+                        obscureText: true,
+                        decoration: InputDecoration(
+                            fillColor: Colors.grey.shade100,
+                            filled: true,
+                            hintText: 'Password',
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10))),
+                        onChanged: (val) {
+                          setState(() {
+                            password = val;
+                          });
+                        },
+                      ),
+                      const SizedBox(
+                        height: 40,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text('Sign In',
+                              style: TextStyle(
+                                color: Color(0xff4c505b),
+                                fontSize: 27,
+                                fontWeight: FontWeight.w700,
+                              )),
+                          CircleAvatar(
+                              radius: 30,
+                              backgroundColor: const Color(0xff4c505b),
+                              child: IconButton(
+                                color: Colors.white,
+                                onPressed: () async {
+                                  dynamic result =
+                                      await _auth.signInEmailAndPass(
+                                          email: email, password: password);
+                                  if (result != null) {
+                                    Navigator.pushNamedAndRemoveUntil(
+                                        context,
+                                        '/home',
+                                        (Route<dynamic> route) => false);
+                                  }
+                                  print(result);
+                                },
+                                icon: const Icon(Icons.arrow_forward),
+                              )),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 30,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          TextButton(
+                              onPressed: () {
+                                Navigator.pushNamed(context, '/register');
+                              },
+                              child: const Text('Sign Up',
+                                  style: TextStyle(
+                                    decoration: TextDecoration.underline,
+                                    fontSize: 18,
+                                    color: Color(0xff4c505b),
+                                  ))),
+                          TextButton(
                               onPressed: () {},
-                              icon: const Icon(Icons.arrow_forward),
-                            )),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 30,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        TextButton(
-                            onPressed: () {
-                              Navigator.pushNamed(context, 'register');
-                            },
-                            child: const Text('Sign Up',
-                                style: TextStyle(
-                                  decoration: TextDecoration.underline,
-                                  fontSize: 18,
-                                  color: Color(0xff4c505b),
-                                ))),
-                        TextButton(
-                            onPressed: () {},
-                            child: const Text('Forgot Password',
-                                style: TextStyle(
-                                  decoration: TextDecoration.underline,
-                                  fontSize: 18,
-                                  color: Color(0xff4c505b),
-                                )))
-                      ],
-                    ),
-                  ],
+                              child: const Text('Forgot Password',
+                                  style: TextStyle(
+                                    decoration: TextDecoration.underline,
+                                    fontSize: 18,
+                                    color: Color(0xff4c505b),
+                                  )))
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),

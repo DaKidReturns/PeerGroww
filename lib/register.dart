@@ -15,6 +15,7 @@ class _MyRegisterState extends State<MyRegister> {
   final _formKey = GlobalKey<FormState>();
   String email = '';
   String password = '';
+  String name = '';
   String error = '';
   bool loading = false;
 
@@ -53,18 +54,41 @@ class _MyRegisterState extends State<MyRegister> {
                         key: _formKey,
                         child: Column(
                           children: [
-                            FormFields.textField1(
-                                hintText: "Name", obscueText: false),
+                            TextFormField(
+                              style: TextStyle(color: Colors.white),
+                              decoration:
+                                  FormFieldsDecoration.textFieldDecoration(
+                                      hintText: "Name"),
+                              onChanged: (val) => setState(() => name = val),
+                            ),
                             const SizedBox(
                               height: 30,
                             ),
-                            FormFields.textField1(
-                                hintText: "Email", obscueText: false),
+                            TextFormField(
+                              style: TextStyle(
+                                  color: Color.fromARGB(255, 56, 41, 41)),
+                              decoration:
+                                  FormFieldsDecoration.textFieldDecoration(
+                                      hintText: "Email"),
+                              onChanged: (val) => setState(() {
+                                email = val;
+                              }),
+                            ),
                             const SizedBox(
                               height: 30,
                             ),
-                            FormFields.textField1(
-                                hintText: "Password", obscueText: true),
+                            TextFormField(
+                              style: TextStyle(color: Colors.white),
+                              decoration:
+                                  FormFieldsDecoration.textFieldDecoration(
+                                      hintText: "Password"),
+                              obscureText: true,
+                              onChanged: (val) {
+                                setState(() {
+                                  password = val;
+                                });
+                              },
+                            ),
                             const SizedBox(
                               height: 40,
                             ),
@@ -90,6 +114,9 @@ class _MyRegisterState extends State<MyRegister> {
                                                 email: email,
                                                 password: password);
                                         //}
+                                        if (result != null) {
+                                          Navigator.pushNamed(context, '/home');
+                                        }
                                       },
                                       icon: const Icon(
                                         Icons.arrow_forward,
@@ -105,7 +132,7 @@ class _MyRegisterState extends State<MyRegister> {
                               children: [
                                 TextButton(
                                   onPressed: () {
-                                    Navigator.pushNamed(context, 'login');
+                                    Navigator.pushNamed(context, '/login');
                                   },
                                   child: const Text(
                                     'Sign In',
