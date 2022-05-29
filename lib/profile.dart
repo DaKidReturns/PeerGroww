@@ -3,15 +3,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutterbasics/main.dart';
-
-Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  // await Firebase.initializeApp(
-  //   options: FirebaseOptions(, appId: appId, messagingSenderId: messagingSenderId, projectId: projectId)
-  // );
-  runApp(MaterialApp(home: Home()));
-}
 
 class Colorchangebutton extends StatefulWidget {
   bool onpressed = false;
@@ -78,14 +69,14 @@ class _Colorchangebutton extends State<Colorchangebutton> {
   }
 }
 
-class Home extends StatefulWidget {
-  Home({Key? key}) : super(key: key);
+class Profile extends StatefulWidget {
+  Profile({Key? key}) : super(key: key);
 
   @override
-  State<Home> createState() => _HomeState();
+  State<Profile> createState() => ProfileState();
 }
 
-class _HomeState extends State<Home> {
+class ProfileState extends State<Profile> {
   final double coverheight = 280;
 
   final double profileheight = 62;
@@ -133,13 +124,6 @@ class _HomeState extends State<Home> {
                   child: buildProfileImage(),
                 ),
               ),
-              // const Divider(
-              //   height: 65,
-              //   thickness: 2,
-              //   indent: 0,
-              //   endIndent: 0,
-              //   color: Color.fromARGB(255, 99, 97, 97),
-              // ),
               Padding(
                   padding: const EdgeInsets.only(top: 65, left: 10),
                   child: Text(
@@ -285,7 +269,7 @@ class _HomeState extends State<Home> {
                         Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => Home(),
+                              builder: (context) => Profile(),
                             ));
                         // FirebaseFirestore.instance.collection("amal").doc("rahul").set({
                         //   'name': 'AMAL',

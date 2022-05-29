@@ -5,6 +5,7 @@ import 'login.dart';
 import 'home.dart';
 import 'register.dart';
 import 'landing.dart';
+import 'profile.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -28,11 +29,12 @@ class MyApp extends StatelessWidget {
         builder: (cntxt, user) {
           return MaterialApp(
             debugShowCheckedModeBanner: false,
-            initialRoute: initRoute, 
+            initialRoute: initRoute,
             routes: {
               '/login': (content) => const MyLogin(),
               '/register': (context) => const MyRegister(),
               '/home': (context) => const Home(),
+              '/profile': (context) => Profile(),
             },
           );
         });

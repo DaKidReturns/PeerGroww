@@ -13,18 +13,27 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: Container(
-      child: Center(
-        child: ElevatedButton(
-          onPressed: () async {
-            await _auth.signOut();
-            Navigator.pushNamedAndRemoveUntil(
-                context, '/login', (Route<dynamic> route) => false);
-          },
-          child: Text("Logout"),
+    return SafeArea(
+      child: Scaffold(
+          body: Container(
+        child: Column(
+          children: [
+            ElevatedButton(
+              onPressed: () async {
+                await _auth.signOut();
+                Navigator.pushNamedAndRemoveUntil(
+                    context, '/login', (Route<dynamic> route) => false);
+              },
+              child: Text("Logout"),
+            ),
+            ElevatedButton(
+              onPressed: () => Navigator.pushNamed(context, '/profile'),
+              child: Text("Profile"),
+            )
+          ],
         ),
-      ),
-    ));
+        
+      )),
+    );
   }
 }
