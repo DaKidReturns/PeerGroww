@@ -112,13 +112,14 @@ class _HomeState extends State<Home> {
           Image.asset('assets/login.png'),
           ListView(
             scrollDirection: Axis.vertical,
-            padding: const EdgeInsets.only(top: 10),
+            padding:
+                EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.07),
             children: [
               Align(
                 alignment: Alignment(-1, -1),
                 child: IconButton(
                   icon: const Icon(Icons.arrow_back),
-                  onPressed: () {},
+                  onPressed: () => Navigator.pop(context),
                 ),
               ),
               Align(
