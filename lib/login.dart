@@ -15,6 +15,7 @@ class _MyLoginState extends State<MyLogin> {
 
   String email = '';
   String password = '';
+  String error = '';
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -78,6 +79,12 @@ class _MyLoginState extends State<MyLogin> {
                       const SizedBox(
                         height: 40,
                       ),
+                      Text(error,
+                          style: const TextStyle(
+                              color: const Color.fromRGBO(244, 67, 54, 1))),
+                      const SizedBox(
+                        height: 40,
+                      ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -93,16 +100,36 @@ class _MyLoginState extends State<MyLogin> {
                               child: IconButton(
                                 color: Colors.white,
                                 onPressed: () async {
-                                  dynamic result =
-                                      await _auth.signInEmailAndPass(
-                                          email: email, password: password);
-                                  if (result != null) {
-                                    Navigator.pushNamedAndRemoveUntil(
-                                        context,
-                                        '/home',
-                                        (Route<dynamic> route) => false);
+                                  dynamic result;
+                                  try {
+                                    result = await _auth.signInEmailAndPass(
+                                        email: email, password: password);
+                                    if (result != null) {
+                                      Navigator.pushNamed(context, '/home');
+                                    }
+                                  } catch (e) {
+                                    print(result.runtimeType);
+                                    print(
+                                        "${(e as FirebaseAuthException).code}");
+                                    setState(() {
+                                      error = "";
+                                      String temp = e.toString();
+                                      bool start = true;
+                                      for (int i = 0; i < temp.length; i++) {
+                                        if (temp[i] == '[') {
+                                          start = false;
+                                          continue;
+                                        }
+                                        if (temp[i] == ']') {
+                                          start = true;
+                                          continue;
+                                        }
+                                        if (start) {
+                                          error = error + temp[i];
+                                        }
+                                      }
+                                    });
                                   }
-                                  print(result);
                                 },
                                 icon: const Icon(Icons.arrow_forward),
                               )),
@@ -111,6 +138,7 @@ class _MyLoginState extends State<MyLogin> {
                       const SizedBox(
                         height: 30,
                       ),
+                      
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [

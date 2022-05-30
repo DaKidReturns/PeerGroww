@@ -1,3 +1,5 @@
+import 'package:firebase_auth/firebase_auth.dart';
+
 import 'services/auth.dart';
 import 'widgets/form_fields.dart';
 import 'package:flutter/material.dart';
@@ -92,6 +94,9 @@ class _MyRegisterState extends State<MyRegister> {
                             const SizedBox(
                               height: 40,
                             ),
+                            Text(error,
+                                style:
+                                    TextStyle(color: Colors.red, fontSize: 14)),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -108,14 +113,38 @@ class _MyRegisterState extends State<MyRegister> {
                                   child: IconButton(
                                       color: Colors.white,
                                       onPressed: () async {
-                                        //if (_formKey.currentState!.validate()) {
-                                        dynamic result =
-                                            await _auth.regWithEmailAndPass(
-                                                email: email,
-                                                password: password);
-                                        //}
-                                        if (result != null) {
+                                        dynamic result;
+                                        try {
+                                          result =
+                                              await _auth.regWithEmailAndPass(
+                                                  email: email,
+                                                  password: password);
                                           Navigator.pushNamed(context, '/home');
+                                        } catch (e) {
+                                          print(result.runtimeType);
+                                          print(
+                                              "${(e as FirebaseAuthException).code}");
+
+                                          setState(() {
+                                            error = "";
+                                            String temp = e.toString();
+                                            bool start = true;
+                                            for (int i = 0;
+                                                i < temp.length;
+                                                i++) {
+                                              if (temp[i] == '[') {
+                                                start = false;
+                                                continue;
+                                              }
+                                              if (temp[i] == ']') {
+                                                start = true;
+                                                continue;
+                                              }
+                                              if (start) {
+                                                error = error + temp[i];
+                                              }
+                                            }
+                                          });
                                         }
                                       },
                                       icon: const Icon(
@@ -132,7 +161,7 @@ class _MyRegisterState extends State<MyRegister> {
                               children: [
                                 TextButton(
                                   onPressed: () {
-                                    Navigator.pushNamed(context, '/login');
+                                    //Navigator.pushNamed(context, '/login');
                                   },
                                   child: const Text(
                                     'Sign In',

@@ -11,8 +11,8 @@ class AuthService {
           email: email, password: password);
       User? userFirebase = result.user;
       return userFirebase;
-    } catch (e) {
-      print(e.toString());
+    } on FirebaseAuthException catch (e) {
+      return Future.error(e);
     }
   }
 
@@ -24,15 +24,10 @@ class AuthService {
         email: email,
         password: password,
       );
-    } /*on FirebaseAuthException catch (e) {
-      if (e.code == 'weak-password') {
-        print('The password provided is too weak.');
-      } else if (e.code == 'email-already-in-use') {
-        print('The account already exists for that email.');
-      }
-    } */
-    catch (e) {
-      print(e);
+      return credential;
+    } on FirebaseAuthException catch (e) {
+      print('Error caught ${e.code}');
+      return Future.error(e);
     }
   }
 
