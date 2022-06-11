@@ -4,7 +4,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'login.dart';
 import 'home.dart';
 import 'register.dart';
-import 'landing.dart';
 import 'profile.dart';
 
 void main() async {

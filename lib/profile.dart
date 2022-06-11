@@ -3,6 +3,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'models/app_user.dart';
+import 'services/database.dart';
 
 class Colorchangebutton extends StatefulWidget {
   bool onpressed = false;
@@ -77,10 +79,16 @@ class Profile extends StatefulWidget {
 }
 
 class ProfileState extends State<Profile> {
+  AppUser? _user;
   final double coverheight = 280;
 
   final double profileheight = 62;
-
+  @override
+  /*void initState() {
+    // TODO: implement initState
+    super.initState();
+    _user = 
+  }*/
   @override
   Widget build(BuildContext context) {
     MediaQueryData queryData;
