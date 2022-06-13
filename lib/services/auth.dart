@@ -32,9 +32,11 @@ class AuthService {
         password: password,
       );
       User? usr = credential.user;
-      _dataServ.updateUserData(usr!.uid, firstName, lastName);
-
-      //print(credential.user);
+      _dataServ.updateUserData(
+          uid: usr!.uid,
+          firstName: firstName,
+          lastName: lastName,
+          email: email);
       return credential;
     } on FirebaseAuthException catch (e) {
       print('Error caught ${e.code}');

@@ -11,10 +11,11 @@ class AppUser {
   int? pincode;
 
   AppUser(
-    this.uid,
-    this.firstName,
-    this.lastName,
-    this.email, {
+  {
+    required this.uid,
+    required this.firstName,
+    required this.lastName,
+    required this.email, 
     this.pincode,
     int year = -1,
     int month = -1,

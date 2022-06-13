@@ -7,6 +7,7 @@ import 'register.dart';
 import 'profile.dart';
 
 void main() async {
+  print("Hello there");
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   runApp(MyApp());

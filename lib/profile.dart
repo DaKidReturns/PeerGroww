@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, unused_local_variable, sized_box_for_whitespace
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'models/app_user.dart';
@@ -80,15 +81,31 @@ class Profile extends StatefulWidget {
 
 class ProfileState extends State<Profile> {
   AppUser? _user;
+  String? name;
+  String? emailId;
   final double coverheight = 280;
 
   final double profileheight = 62;
   @override
-  /*void initState() {
+  void initState() {
     // TODO: implement initState
     super.initState();
-    _user = 
-  }*/
+    DatabaseService _ds = DatabaseService();
+    User? usr = FirebaseAuth.instance.currentUser;
+    if (usr != null) {
+      _ds.getUserData(usr.uid).then((value) {
+        _user = value as AppUser;
+        if (_user != null) {
+          setState(() {
+            name = _user!.firstName + " " + _user!.lastName;
+            emailId = _user!.email;
+            print(name);
+          });
+        }
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     MediaQueryData queryData;
@@ -103,6 +120,8 @@ class ProfileState extends State<Profile> {
     b2.name = "PYTHON";
     b3.name = "FLUTTER";
     b4.name = "WEB DEV";
+
+
 
     var skillist = ['a', 'b', 'c', 'a', 'b', 'c', 'a', 'b', 'c'];
     return Scaffold(
@@ -124,7 +143,7 @@ class ProfileState extends State<Profile> {
               Align(
                   alignment: Alignment(0.0, 1.0),
                   child: Text(
-                    'USERNAME',
+                    name ?? 'NAME',
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 19),
                   )),
               Padding(
@@ -308,7 +327,7 @@ class ProfileState extends State<Profile> {
       child: CircleAvatar(
         radius: profileheight,
         backgroundColor: Colors.grey.shade800,
-        backgroundImage: AssetImage('profilepic.jpg'),
+        //backgroundImage: AssetImage('profilepic.jpg'),
       ));
 
   // Widget colorchangebutton() => Align(
