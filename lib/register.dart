@@ -17,7 +17,8 @@ class _MyRegisterState extends State<MyRegister> {
   final _formKey = GlobalKey<FormState>();
   String email = '';
   String password = '';
-  String name = '';
+  String firstName = '';
+  String lastName = '';
   String error = '';
   bool loading = false;
 
@@ -60,8 +61,20 @@ class _MyRegisterState extends State<MyRegister> {
                               style: TextStyle(color: Colors.white),
                               decoration:
                                   FormFieldsDecoration.textFieldDecoration(
-                                      hintText: "Name"),
-                              onChanged: (val) => setState(() => name = val),
+                                      hintText: "First Name"),
+                              onChanged: (val) =>
+                                  setState(() => firstName = val),
+                            ),
+                            const SizedBox(
+                              height: 30,
+                            ),
+                            TextFormField(
+                              style: TextStyle(color: Colors.white),
+                              decoration:
+                                  FormFieldsDecoration.textFieldDecoration(
+                                      hintText: "Last Name"),
+                              onChanged: (val) =>
+                                  setState(() => lastName = val),
                             ),
                             const SizedBox(
                               height: 30,
@@ -118,7 +131,9 @@ class _MyRegisterState extends State<MyRegister> {
                                           result =
                                               await _auth.regWithEmailAndPass(
                                                   email: email,
-                                                  password: password);
+                                                  password: password,
+                                                  lastName: lastName,
+                                                  firstName: firstName);
                                           Navigator.pushNamed(context, '/home');
                                         } catch (e) {
                                           print(result.runtimeType);
