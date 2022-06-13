@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:peergroww/config/palette.dart';
 import 'package:peergroww/widgets/widgets.dart';
+import 'services/database.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'models/app_user.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -8,8 +11,30 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  AppUser? _user;
+  String? name;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    DatabaseService _ds = DatabaseService();
+    User? usr = FirebaseAuth.instance.currentUser;
+    if (usr != null) {
+      _ds.getUserData(usr.uid).then((value) {
+        _user = value as AppUser;
+        if (_user != null) {
+          setState(() {
+            name = _user!.firstName;
+            print(name);
+          });
+        }
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+
     final screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: CustomAppBar(),
@@ -42,7 +67,7 @@ class _HomeScreenState extends State<HomeScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Text(
-                  'Hi, User',
+                  'Hi, ' + (name ?? "User"),
                   style: const TextStyle(
                     color: Colors.white,
                     fontSize: 25.0,

@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:peergroww/config/palette.dart';
+import 'package:peergroww/services/auth.dart';
 
 class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
+  final AuthService _auth = AuthService();
+
   @override
   Widget build(BuildContext context) {
     return AppBar(
@@ -9,16 +12,20 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
       elevation: 0.0,
       leading: Row(
         children: [
-          SizedBox(
+          /*SizedBox(
             width: 10,
-          ),
-          Icon(
-            Icons.home,
-            size: 24.0,
-          ),
-          SizedBox(
+          ),*/
+          IconButton(
+              icon: const Icon(Icons.logout),
+              iconSize: 24,
+              onPressed: () async {
+                await _auth.signOut();
+                Navigator.pushNamedAndRemoveUntil(
+                    context, '/login', (Route<dynamic> route) => false);
+              }),
+          /*SizedBox(
             width: 10,
-          ),
+          ),*/
         ],
       ),
       actions: <Widget>[

@@ -58,7 +58,7 @@ class _MyRegisterState extends State<MyRegister> {
                         child: Column(
                           children: [
                             TextFormField(
-                              style: TextStyle(color: Colors.white),
+                              style: const TextStyle(color: Colors.white),
                               decoration:
                                   FormFieldsDecoration.textFieldDecoration(
                                       hintText: "First Name"),
@@ -69,7 +69,7 @@ class _MyRegisterState extends State<MyRegister> {
                               height: 30,
                             ),
                             TextFormField(
-                              style: TextStyle(color: Colors.white),
+                              style: const TextStyle(color: Colors.white),
                               decoration:
                                   FormFieldsDecoration.textFieldDecoration(
                                       hintText: "Last Name"),
@@ -80,7 +80,7 @@ class _MyRegisterState extends State<MyRegister> {
                               height: 30,
                             ),
                             TextFormField(
-                              style: TextStyle(
+                              style: const TextStyle(
                                   color: Color.fromARGB(255, 56, 41, 41)),
                               decoration:
                                   FormFieldsDecoration.textFieldDecoration(
