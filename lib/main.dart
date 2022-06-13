@@ -1,10 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:peergroww/home_screen.dart';
+import 'package:peergroww/bottom_nav_screen.dart';
 import 'login.dart';
-import 'home.dart';
+import 'home_screen.dart';
 import 'register.dart';
-import 'landing.dart';
 import 'profile.dart';
 
 void main() async {
@@ -33,7 +34,7 @@ class MyApp extends StatelessWidget {
             routes: {
               '/login': (content) => const MyLogin(),
               '/register': (context) => const MyRegister(),
-              '/home': (context) => const Home(),
+              '/home': (context) => BottomNavScreen(),
               '/profile': (context) => Profile(),
             },
           );
