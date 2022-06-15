@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:peergroww/loading.dart';
 import 'package:peergroww/services/auth.dart';
 
 class MyLogin extends StatefulWidget {
@@ -16,6 +17,8 @@ class _MyLoginState extends State<MyLogin> {
   String email = '';
   String password = '';
   String error = '';
+
+  final GlobalKey<State> _LoaderDialog = new GlobalKey<State>();
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -102,13 +105,22 @@ class _MyLoginState extends State<MyLogin> {
                                 onPressed: () async {
                                   dynamic result;
                                   try {
+                                    LoaderDialog.showLoadingDialog(
+                                        context, _LoaderDialog); 
                                     result = await _auth.signInEmailAndPass(
                                         email: email, password: password);
+                                    Navigator.of(_LoaderDialog.currentContext!,
+                                            rootNavigator: true)
+                                        .pop();
                                     if (result != null) {
+
                                       Navigator.pushNamed(context, '/home');
+                                      
                                     }
                                   } catch (e) {
-                                    print(result.runtimeType);
+                                    Navigator.of(_LoaderDialog.currentContext!,
+                                            rootNavigator: true)
+                                        .pop();
                                     print(
                                         "${(e as FirebaseAuthException).code}");
                                     setState(() {
@@ -138,7 +150,6 @@ class _MyLoginState extends State<MyLogin> {
                       const SizedBox(
                         height: 30,
                       ),
-                      
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [

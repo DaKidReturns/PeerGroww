@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:peergroww/config/palette.dart';
 import 'package:peergroww/widgets/widgets.dart';
-import 'services/database.dart';
+import 'package:peergroww/services/database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'models/app_user.dart';
+import 'package:peergroww/models/app_user.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -15,7 +15,6 @@ class _HomeScreenState extends State<HomeScreen> {
   String? name;
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     DatabaseService _ds = DatabaseService();
     User? usr = FirebaseAuth.instance.currentUser;

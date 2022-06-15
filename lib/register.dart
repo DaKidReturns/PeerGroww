@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'services/auth.dart';
 import 'widgets/form_fields.dart';
 import 'package:flutter/material.dart';
+import 'package:peergroww/loading.dart';
 
 class MyRegister extends StatefulWidget {
   const MyRegister({Key? key}) : super(key: key);
@@ -21,6 +22,8 @@ class _MyRegisterState extends State<MyRegister> {
   String lastName = '';
   String error = '';
   bool loading = false;
+
+  final GlobalKey<State> _LoaderDialog = new GlobalKey<State>();
 
   @override
   Widget build(BuildContext context) {
@@ -128,17 +131,27 @@ class _MyRegisterState extends State<MyRegister> {
                                       onPressed: () async {
                                         dynamic result;
                                         try {
+                                          LoaderDialog.showLoadingDialog(
+                                              context, _LoaderDialog);
                                           result =
                                               await _auth.regWithEmailAndPass(
                                                   email: email,
                                                   password: password,
                                                   lastName: lastName,
                                                   firstName: firstName);
+                                          Navigator.of(
+                                                  _LoaderDialog.currentContext!,
+                                                  rootNavigator: true)
+                                              .pop();
                                           Navigator.pushNamed(context, '/home');
                                         } catch (e) {
                                           print(result.runtimeType);
                                           print(
                                               "${(e as FirebaseAuthException).code}");
+                                          Navigator.of(
+                                                  _LoaderDialog.currentContext!,
+                                                  rootNavigator: true)
+                                              .pop();
 
                                           setState(() {
                                             error = "";

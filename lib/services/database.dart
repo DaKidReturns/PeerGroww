@@ -14,7 +14,12 @@ class DatabaseService {
       required String lastName}) async {
     return await userCollection
         .doc(uid)
-        .set({'firstName': firstName, 'lastName': lastName, 'email': email});
+        .set({
+      'uid': uid,
+      'firstName': firstName,
+      'lastName': lastName,
+      'email': email,
+    });
   }
 
   Future getUserData(String uid) async {
