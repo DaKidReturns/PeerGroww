@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:peergroww/screens.dart';
+import 'package:peergroww/screens/chat_list.dart';
+import 'package:peergroww/screens/screens.dart';
 
 class BottomNavScreen extends StatefulWidget {
   @override
@@ -11,8 +12,7 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
     HomeScreen(),
     Scaffold(),
     Scaffold(),
-    Scaffold(),
-    Scaffold(),
+    ChatListPage(),
   ];
   int _currentIndex = 0;
 

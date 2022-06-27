@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:peergroww/loading.dart';
+import 'package:peergroww/widgets/loading.dart';
 import 'package:peergroww/services/auth.dart';
 
 class MyLogin extends StatefulWidget {
@@ -106,16 +106,14 @@ class _MyLoginState extends State<MyLogin> {
                                   dynamic result;
                                   try {
                                     LoaderDialog.showLoadingDialog(
-                                        context, _LoaderDialog); 
+                                        context, _LoaderDialog);
                                     result = await _auth.signInEmailAndPass(
                                         email: email, password: password);
                                     Navigator.of(_LoaderDialog.currentContext!,
                                             rootNavigator: true)
                                         .pop();
                                     if (result != null) {
-
                                       Navigator.pushNamed(context, '/home');
-                                      
                                     }
                                   } catch (e) {
                                     Navigator.of(_LoaderDialog.currentContext!,

@@ -4,8 +4,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'models/app_user.dart';
-import 'services/database.dart';
+import 'package:peergroww/models/app_user.dart';
+import 'package:peergroww/services/database.dart';
 
 class Colorchangebutton extends StatefulWidget {
   bool onpressed = false;
@@ -120,8 +120,6 @@ class ProfileState extends State<Profile> {
     b2.name = "PYTHON";
     b3.name = "FLUTTER";
     b4.name = "WEB DEV";
-
-
 
     var skillist = ['a', 'b', 'c', 'a', 'b', 'c', 'a', 'b', 'c'];
     return Scaffold(

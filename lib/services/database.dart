@@ -4,6 +4,7 @@ import '../models/app_user.dart';
 class DatabaseService {
   // final String uid;
   // DatabaseService({required this.uid});
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   final CollectionReference userCollection =
       FirebaseFirestore.instance.collection('users');
@@ -12,9 +13,7 @@ class DatabaseService {
       required String email,
       required String firstName,
       required String lastName}) async {
-    return await userCollection
-        .doc(uid)
-        .set({
+    return await userCollection.doc(uid).set({
       'uid': uid,
       'firstName': firstName,
       'lastName': lastName,
@@ -35,4 +34,6 @@ class DatabaseService {
           email: userDoc.get('email'));
     }
   }
+
+
 }

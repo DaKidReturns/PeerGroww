@@ -23,9 +23,6 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
                 Navigator.pushNamedAndRemoveUntil(
                     context, '/login', (Route<dynamic> route) => false);
               }),
-          /*SizedBox(
-            width: 10,
-          ),*/
         ],
       ),
       actions: <Widget>[
