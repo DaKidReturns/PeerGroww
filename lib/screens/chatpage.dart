@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:peergroww/widgets/chat_widgets/flat_action_btn.dart';
@@ -17,17 +19,18 @@ class ChatPage extends StatefulWidget {
 
 class _ChatPageState extends State<ChatPage> {
   String _message = "";
+  List<Widget> children = [];
   //final TextEditingController _message = TextEditingController();
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  static final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   FirebaseAuth _auth = FirebaseAuth.instance;
   static final String Chatroomid = 'chatroomid';
 
-  Stream<QuerySnapshot> get firestoreChat {
+  static Stream<QuerySnapshot> get firestoreChat {
     return _firestore
         .collection('chatroom')
         .doc(Chatroomid)
         .collection('messages')
-        .orderBy("time", descending: false)
+        .orderBy("time", descending: true)
         .snapshots();
   }
 
@@ -52,9 +55,27 @@ class _ChatPageState extends State<ChatPage> {
       print("Enter some text");
     }
   }
+  @override
+  void initState() {
+    super.initState();
+    final subsciber = firestoreChat.listen(
+      (snapshot) {
+        setState(() {
+          children = snapshot.docs.map((document) {
+            //print(document['message']);
+            return (FlatChatMessage(message: document['message']));
+          }).toList();
+        });
+      },
+      onDone: () => print("Done"),
+    );
+    subsciber.resume();
+  }
 
   @override
   Widget build(BuildContext context) {
+    
+    
     return Scaffold(
       body: FlatPageWrapper(
         scrollType: ScrollType.floatingHeader,
@@ -76,85 +97,80 @@ class _ChatPageState extends State<ChatPage> {
           //   },
           // ),
         ),
-        //children:
+        children: children,
         //[
-        // StreamBuilder<QuerySnapshot>(
-        //     stream: _firestore
-        //         .collection('chatroom')
-        //         .doc(Chatroomid)
-        //         .collection('messages')
-        //         .orderBy("time", descending: false)
-        //         .snapshots(),
-        //     builder: (BuildContext context,
-        //         AsyncSnapshot<QuerySnapshot> snapshot) {
-        //       print(Chatroomid);
-        //       if (snapshot.data != null) {
-        //         print(snapshot.data!.docs.length);
-        //         return ListView(
-        //           children: snapshot.data!.docs.map((document) {
-        //             print(document['message']);
-        //             return (FlatChatMessage(message: document['message']));
-        //           }).toList(),
-        //         );
-
-        //         // return ListView(
-        //         //   children: [ ],
-        //         // );
-        //       } else {
-        //         return Container();
-        //       }
-        //     })
-        //],
-        children: [
-          FlatChatMessage(
-            message: "Hello World!, This is the first message.",
-            messageType: MessageType.sent,
-            showTime: true,
-            time: "2 mins ago",
-          ),
-          FlatChatMessage(
-            message: "Typing another message from the input box.",
-            messageType: MessageType.sent,
-            showTime: true,
-            time: "2 mins ago",
-          ),
-          FlatChatMessage(
-            message: "Message Length Small.",
-            showTime: true,
-            time: "2 mins ago",
-          ),
-          FlatChatMessage(
-            message:
-                "Message Length Large. This message has more text to configure the size of the message box.",
-            showTime: true,
-            time: "2 mins ago",
-          ),
-          FlatChatMessage(
-            message: "Meet me tomorrow at the coffee shop.",
-            showTime: true,
-            time: "2 mins ago",
-          ),
-          FlatChatMessage(
-            message: "Around 11 o'clock.",
-            showTime: true,
-            time: "2 mins ago",
-          ),
-          FlatChatMessage(
-            message:
-                "Flat Social UI kit is going really well. Hope this finishes soon.",
-            showTime: true,
-            time: "2 mins ago",
-          ),
-          FlatChatMessage(
-            message: "Final Message in the list.",
-            showTime: true,
-            time: "2 mins ago",
-          ),
-        ],
+        //   StreamBuilder<QuerySnapshot>(
+        //       stream: _firestore
+        //           .collection('chatroom')
+        //           .doc(Chatroomid)
+        //           .collection('messages')
+        //           .orderBy("time", descending: false)
+        //           .snapshots(),
+        //       builder: (BuildContext context,
+        //           AsyncSnapshot<QuerySnapshot> snapshot) {
+        //         if (snapshot.data != null) {
+        //           //print(snapshot.data!.docs.length);
+        //           return Container();
+        //           // return Stack(
+        //           //   children: snapshot.data!.docs.map((document) {
+        //           //     print(document['message']);
+        //           //     return (FlatChatMessage(message: document['message']));
+        //           //   }).toList(),
+        //           // );
+        //         } else {
+        //           return Container();
+        //         }
+        //       })
+        // ],
+        // children: [
+        //   FlatChatMessage(
+        //     message: "Hello World!, This is the first message.",
+        //     messageType: MessageType.sent,
+        //     showTime: true,
+        //     time: "2 mins ago",
+        //   ),
+        //   FlatChatMessage(
+        //     message: "Typing another message from the input box.",
+        //     messageType: MessageType.sent,
+        //     showTime: true,
+        //     time: "2 mins ago",
+        //   ),
+        //   FlatChatMessage(
+        //     message: "Message Length Small.",
+        //     showTime: true,
+        //     time: "2 mins ago",
+        //   ),
+        //   FlatChatMessage(
+        //     message:
+        //         "Message Length Large. This message has more text to configure the size of the message box.",
+        //     showTime: true,
+        //     time: "2 mins ago",
+        //   ),
+        //   FlatChatMessage(
+        //     message: "Meet me tomorrow at the coffee shop.",
+        //     showTime: true,
+        //     time: "2 mins ago",
+        //   ),
+        //   FlatChatMessage(
+        //     message: "Around 11 o'clock.",
+        //     showTime: true,
+        //     time: "2 mins ago",
+        //   ),
+        //   FlatChatMessage(
+        //     message:
+        //         "Flat Social UI kit is going really well. Hope this finishes soon.",
+        //     showTime: true,
+        //     time: "2 mins ago",
+        //   ),
+        //   FlatChatMessage(
+        //     message: "Final Message in the list.",
+        //     showTime: true,
+        //     time: "2 mins ago",
+        //   ),
+        // ],
         footer: FlatMessageInputBox(
           onChanged: (val) {
             setState(() {
-              print("Changed");
               _message = val;
             });
           },
