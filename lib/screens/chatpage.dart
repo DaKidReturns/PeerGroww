@@ -38,7 +38,7 @@ class _ChatPageState extends State<ChatPage> {
     print("Sending message");
     if (_message.isNotEmpty) {
       Map<String, dynamic> messages = {
-        "sendby": _auth.currentUser?.displayName,
+        "sendby": _auth.currentUser?.uid,
         "message": _message,
         "time": FieldValue.serverTimestamp(),
         "chatroomid": Chatroomid,
@@ -55,15 +55,24 @@ class _ChatPageState extends State<ChatPage> {
       print("Enter some text");
     }
   }
+
   @override
   void initState() {
     super.initState();
     final subsciber = firestoreChat.listen(
       (snapshot) {
-        setState(() {
+        setState(() async {
+          String? uuid = await _auth.currentUser?.uid;
           children = snapshot.docs.map((document) {
             //print(document['message']);
-            return (FlatChatMessage(message: document['message']));
+            // == document['sentby'] ? true : false  ;
+            print(document.toString());
+            return (FlatChatMessage(
+              message: document['messages'],
+              messageType: uuid == document['sendby']
+                  ? MessageType.sent
+                  : MessageType.received,
+            ));
           }).toList();
         });
       },
@@ -74,8 +83,6 @@ class _ChatPageState extends State<ChatPage> {
 
   @override
   Widget build(BuildContext context) {
-    
-    
     return Scaffold(
       body: FlatPageWrapper(
         scrollType: ScrollType.floatingHeader,
