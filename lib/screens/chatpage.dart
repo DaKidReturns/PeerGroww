@@ -10,6 +10,8 @@ import 'package:peergroww/widgets/chat_widgets/flat_page_wrapper.dart';
 import 'package:peergroww/widgets/chat_widgets/flat_profile_image.dart';
 import 'package:flutter/material.dart';
 
+import '../services/database.dart';
+
 class ChatPage extends StatefulWidget {
   static final String id = "/chatpage";
 
@@ -37,6 +39,10 @@ class _ChatPageState extends State<ChatPage> {
   void onSendMessage() async {
     print("Sending message");
     if (_message.isNotEmpty) {
+      print("\n\n\n");
+
+      print(_auth.currentUser?.displayName);
+      print("\n\n\n");
       Map<String, dynamic> messages = {
         "sendby": _auth.currentUser?.displayName,
         "message": _message,
@@ -57,13 +63,22 @@ class _ChatPageState extends State<ChatPage> {
   }
   @override
   void initState() {
+
     super.initState();
     final subsciber = firestoreChat.listen(
       (snapshot) {
         setState(() {
           children = snapshot.docs.map((document) {
-            //print(document['message']);
-            return (FlatChatMessage(message: document['message']));
+            dynamic result=document.data();
+            DatabaseService _ds = DatabaseService();
+            print(result);
+            String name1=_auth.currentUser!.displayName.toString();
+            String name2=result['sendby'].toString();
+            //if(name1.compareTo(name2))
+            if(name1 == name2)
+              return (FlatChatMessage(message:result['message'],messageType: MessageType.sent,));
+            else
+              return (FlatChatMessage(message:result['message'],messageType: MessageType.received,));
           }).toList();
         });
       },

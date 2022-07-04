@@ -48,7 +48,7 @@ class FlatChatItem extends StatelessWidget {
               Expanded(
                 child: Container(
                   margin: EdgeInsets.only(
-                    left: 8.0,
+                    left: 4.0,
                   ),
                   child: Row(
                     mainAxisSize: MainAxisSize.max,

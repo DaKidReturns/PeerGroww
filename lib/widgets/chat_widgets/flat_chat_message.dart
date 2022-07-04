@@ -20,12 +20,21 @@ class FlatChatMessage extends StatelessWidget {
       this.time,
       this.showTime,
       this.minWidth,
-      this.maxWidth});
+      this.maxWidth
+      });
 
   CrossAxisAlignment messageAlignment() {
     if (messageType == null || messageType == MessageType.received) {
+      //print("recieved message :    ");
+      //print(this.message);
+
+      //print("\n\n\n\n\n");
       return CrossAxisAlignment.start;
     } else {
+      //print("sent message :    ");
+      //print(this.message);
+
+      //print("\n\n\n\n\n");
       return CrossAxisAlignment.end;
     }
   }
