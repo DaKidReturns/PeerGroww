@@ -10,6 +10,8 @@ import 'package:peergroww/widgets/chat_widgets/flat_page_wrapper.dart';
 import 'package:peergroww/widgets/chat_widgets/flat_profile_image.dart';
 import 'package:flutter/material.dart';
 
+import '../services/database.dart';
+
 class ChatPage extends StatefulWidget {
   static final String id = "/chatpage";
 
@@ -24,6 +26,7 @@ class _ChatPageState extends State<ChatPage> {
   static final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   FirebaseAuth _auth = FirebaseAuth.instance;
   static final String Chatroomid = 'chatroomid';
+  final TextEditingController inputTextController = TextEditingController();
 
   static Stream<QuerySnapshot> get firestoreChat {
     return _firestore
@@ -37,6 +40,10 @@ class _ChatPageState extends State<ChatPage> {
   void onSendMessage() async {
     print("Sending message");
     if (_message.isNotEmpty) {
+      // print("\n\n\n");
+
+      // print(_auth.currentUser?.displayName);
+      // print("\n\n\n");
       Map<String, dynamic> messages = {
         "sendby": _auth.currentUser?.uid,
         "message": _message,
@@ -50,6 +57,7 @@ class _ChatPageState extends State<ChatPage> {
           .add(messages);
       this.setState(() {
         _message = "";
+       
       });
     } else {
       print("Enter some text");
@@ -62,17 +70,21 @@ class _ChatPageState extends State<ChatPage> {
     final subsciber = firestoreChat.listen(
       (snapshot) {
         setState(() async {
-          String? uuid = await _auth.currentUser?.uid;
+          String? uuid = _auth.currentUser!.uid.toString();
           children = snapshot.docs.map((document) {
-            //print(document['message']);
-            // == document['sentby'] ? true : false  ;
-            print(document.toString());
-            return (FlatChatMessage(
-              message: document['messages'],
-              messageType: uuid == document['sendby']
-                  ? MessageType.sent
-                  : MessageType.received,
-            ));
+            dynamic result = document.data();
+            DatabaseService _ds = DatabaseService();
+            String uuid2 = result['sendby'].toString();
+            if (uuid == uuid2)
+              return (FlatChatMessage(
+                message: result['message'],
+                messageType: MessageType.sent,
+              ));
+            else
+              return (FlatChatMessage(
+                message: result['message'],
+                messageType: MessageType.received,
+              ));
           }).toList();
         });
       },
@@ -105,83 +117,17 @@ class _ChatPageState extends State<ChatPage> {
           // ),
         ),
         children: children,
-        //[
-        //   StreamBuilder<QuerySnapshot>(
-        //       stream: _firestore
-        //           .collection('chatroom')
-        //           .doc(Chatroomid)
-        //           .collection('messages')
-        //           .orderBy("time", descending: false)
-        //           .snapshots(),
-        //       builder: (BuildContext context,
-        //           AsyncSnapshot<QuerySnapshot> snapshot) {
-        //         if (snapshot.data != null) {
-        //           //print(snapshot.data!.docs.length);
-        //           return Container();
-        //           // return Stack(
-        //           //   children: snapshot.data!.docs.map((document) {
-        //           //     print(document['message']);
-        //           //     return (FlatChatMessage(message: document['message']));
-        //           //   }).toList(),
-        //           // );
-        //         } else {
-        //           return Container();
-        //         }
-        //       })
-        // ],
-        // children: [
-        //   FlatChatMessage(
-        //     message: "Hello World!, This is the first message.",
-        //     messageType: MessageType.sent,
-        //     showTime: true,
-        //     time: "2 mins ago",
-        //   ),
-        //   FlatChatMessage(
-        //     message: "Typing another message from the input box.",
-        //     messageType: MessageType.sent,
-        //     showTime: true,
-        //     time: "2 mins ago",
-        //   ),
-        //   FlatChatMessage(
-        //     message: "Message Length Small.",
-        //     showTime: true,
-        //     time: "2 mins ago",
-        //   ),
-        //   FlatChatMessage(
-        //     message:
-        //         "Message Length Large. This message has more text to configure the size of the message box.",
-        //     showTime: true,
-        //     time: "2 mins ago",
-        //   ),
-        //   FlatChatMessage(
-        //     message: "Meet me tomorrow at the coffee shop.",
-        //     showTime: true,
-        //     time: "2 mins ago",
-        //   ),
-        //   FlatChatMessage(
-        //     message: "Around 11 o'clock.",
-        //     showTime: true,
-        //     time: "2 mins ago",
-        //   ),
-        //   FlatChatMessage(
-        //     message:
-        //         "Flat Social UI kit is going really well. Hope this finishes soon.",
-        //     showTime: true,
-        //     time: "2 mins ago",
-        //   ),
-        //   FlatChatMessage(
-        //     message: "Final Message in the list.",
-        //     showTime: true,
-        //     time: "2 mins ago",
-        //   ),
-        // ],
         footer: FlatMessageInputBox(
+          controller: inputTextController,
           onChanged: (val) {
             setState(() {
               _message = val;
             });
           },
-          onSubmitted: onSendMessage,
+          onSubmitted: (val) {
+            onSendMessage();
+            inputTextController.clear();
+          },
           prefix: FlatActionButton(
             iconData: Icons.add,
             iconSize: 24.0,

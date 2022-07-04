@@ -6,13 +6,16 @@ class FlatMessageInputBox extends StatelessWidget {
   final Widget? suffix;
   final bool? roundedCorners;
   final void Function(String)? onChanged;
-  final void Function()? onSubmitted;
+  final void Function(String)? onSubmitted;
+  final TextEditingController controller;
   FlatMessageInputBox(
       {this.prefix,
       this.suffix,
       this.roundedCorners,
       this.onChanged,
-      this.onSubmitted});
+    this.onSubmitted,
+    required this.controller,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -64,8 +67,9 @@ class FlatMessageInputBox extends StatelessWidget {
                 ),
             Expanded(
               child: TextField(
+                controller: controller,
                 onChanged: onChanged,
-                //onSubmitted: onSubmitted,
+                onSubmitted: onSubmitted,
                 decoration: InputDecoration(
                   hintText: "Enter Message...",
                   hintStyle: TextStyle(
@@ -85,7 +89,9 @@ class FlatMessageInputBox extends StatelessWidget {
                   height: 0,
                 ),
             FlatActionButton(
-              onPressed: onSubmitted,
+              onPressed: () {
+                onSubmitted!("");
+              },
               icon: Icon(
                 Icons.send,
                 size: 24.0,

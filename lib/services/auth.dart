@@ -12,9 +12,9 @@ class AuthService {
     try {
       UserCredential result = await _auth.signInWithEmailAndPassword(
           email: email, password: password);
-      User? userFirebase = result.user;
+      User? user = result.user;
 
-      return userFirebase;
+      return user;
     } on FirebaseAuthException catch (e) {
       return Future.error(e);
     }
@@ -37,6 +37,12 @@ class AuthService {
           firstName: firstName,
           lastName: lastName,
           email: email);
+      if(usr!=null) {
+        print("Account created successfully");
+        _auth.currentUser!.updateDisplayName(firstName);
+      }
+
+
       return credential;
     } on FirebaseAuthException catch (e) {
       print('Error caught ${e.code}');

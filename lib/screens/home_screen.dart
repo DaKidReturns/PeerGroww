@@ -18,6 +18,8 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
     DatabaseService _ds = DatabaseService();
     User? usr = FirebaseAuth.instance.currentUser;
+
+    //print("HELLO"+usr!.displayName.toString());
     if (usr != null) {
       _ds.getUserData(usr.uid).then((value) {
         _user = value as AppUser;
