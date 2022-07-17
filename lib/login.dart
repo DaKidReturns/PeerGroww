@@ -138,7 +138,6 @@ class _MyLoginState extends State<MyLogin> {
                       const SizedBox(
                         height: 30,
                       ),
-                      
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
