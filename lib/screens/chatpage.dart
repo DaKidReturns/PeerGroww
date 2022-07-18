@@ -109,14 +109,14 @@ class _ChatPageState extends State<ChatPage> {
             print(database.usersData);
             if (uuid == uuid2) {
               return FlatChatMessage(
-                Sentby: database.usersData[uuid],
+                Sentby: database.usersData[uuid2],
                 //Sentby: uuid,
                 message: result['message'],
                 messageType: MessageType.sent,
               );
             } else {
               return FlatChatMessage(
-                Sentby: database.usersData[uuid],
+                Sentby: database.usersData[uuid2],
                 //Sentby: uuid,
                 message: result['message'],
                 messageType: MessageType.received,
