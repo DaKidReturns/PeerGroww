@@ -46,9 +46,9 @@ class _ChatListPage extends State<ChatListPage> {
             message:
                 "Hello World!, Welcome to Flutter.", // get latest message here
             multiLineMessage: true,
-            counter: FlatCounter(
-              text: "1",
-            ),
+            // counter: FlatCounter(
+            //   text: "1",
+            // ),
           ),
           FlatChatItem(
             profileImage: FlatProfileImage(onlineIndicator: true, imageUrl: ""),

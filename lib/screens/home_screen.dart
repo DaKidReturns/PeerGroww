@@ -172,14 +172,14 @@ class _HomeScreenState extends State<HomeScreen> {
           children: <Widget>[
             Image.asset('assets/complete_reg.png'),
             Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Text(
                   'Enjoy Teaching & Learning',
                   style: const TextStyle(
                     color: Colors.white,
-                    fontSize: 18.0,
+                    fontSize: 16.0,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -190,11 +190,11 @@ class _HomeScreenState extends State<HomeScreen> {
                       'Start your new journey of learning\nwith your peers..',
                       style: const TextStyle(
                         color: Colors.white,
-                        fontSize: 14.0,
+                        fontSize: 10.0,
                       ),
                       maxLines: 2,
                     ),
-                    SizedBox(width: 5),
+                    SizedBox(width: 2),
                   ],
                 ),
               ],

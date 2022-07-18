@@ -11,6 +11,8 @@ class FlatChatMessage extends StatelessWidget {
   final bool? showTime;
   final double? maxWidth;
   final double? minWidth;
+  String? Sentby;
+
 
   FlatChatMessage(
       {this.message,
@@ -20,7 +22,8 @@ class FlatChatMessage extends StatelessWidget {
       this.time,
       this.showTime,
       this.minWidth,
-      this.maxWidth
+      this.maxWidth,
+      this.Sentby,
       });
 
   CrossAxisAlignment messageAlignment() {
@@ -111,12 +114,16 @@ class FlatChatMessage extends StatelessWidget {
               vertical: 12.0,
               horizontal: 16.0,
             ),
-            child: Text(
+            child: Column(
+              children:[
+                Text( Sentby??"sent"),
+                Text(
               message ?? "Message here...",
               style: TextStyle(
                 color: textColor ?? messageTextColor(context),
                 fontWeight: FontWeight.w500,
               ),
+            ),]
             ),
           ),
           Padding(

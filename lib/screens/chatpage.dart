@@ -37,6 +37,8 @@ class _ChatPageState extends State<ChatPage> {
         .snapshots();
   }
 
+
+
   void onSendMessage() async {
     print("Sending message");
     if (_message.isNotEmpty) {
@@ -68,20 +70,41 @@ class _ChatPageState extends State<ChatPage> {
   void initState() {
     super.initState();
     final subsciber = firestoreChat.listen(
-      (snapshot) {
-        setState(() async {
+      (snapshot)  {
+        setState(() {
           String? uuid = _auth.currentUser!.uid.toString();
           children = snapshot.docs.map((document) {
+            print(document.data());
             dynamic result = document.data();
+            //print(result);
             DatabaseService _ds = DatabaseService();
             String uuid2 = result['sendby'].toString();
+            //print(uuid2+" is");
+            Map data={};
+            DocumentReference documentReference=_firestore
+                .collection('users').doc(uuid2);
+            documentReference.snapshots().forEach((element) {
+              if(element.data() != null)
+                {
+                  data=element.data() as Map;
+                  //print(data);
+                }
+            });
             if (uuid == uuid2)
-              return (FlatChatMessage(
+              {
+
+                return (FlatChatMessage(
+                  Sentby: uuid,
                 message: result['message'],
                 messageType: MessageType.sent,
+
               ));
+              }
             else
+              //print(data["firstName"]);
               return (FlatChatMessage(
+                //Sentby: data["firstName"].toString(),
+                Sentby: uuid2,
                 message: result['message'],
                 messageType: MessageType.received,
               ));
