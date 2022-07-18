@@ -116,7 +116,7 @@ class FlatChatMessage extends StatelessWidget {
             ),
             child: Column(
               children:[
-                Text( Sentby??"sent"),
+              Text(Sentby ?? "senderName"),
                 Text(
               message ?? "Message here...",
               style: TextStyle(

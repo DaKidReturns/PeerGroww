@@ -10,7 +10,7 @@ import 'package:peergroww/widgets/chat_widgets/flat_page_wrapper.dart';
 import 'package:peergroww/widgets/chat_widgets/flat_profile_image.dart';
 import 'package:flutter/material.dart';
 
-import '../services/database.dart';
+import '../services/database.dart' as database;
 
 class ChatPage extends StatefulWidget {
   static final String id = "/chatpage";
@@ -27,6 +27,7 @@ class _ChatPageState extends State<ChatPage> {
   FirebaseAuth _auth = FirebaseAuth.instance;
   static final String Chatroomid = 'chatroomid';
   final TextEditingController inputTextController = TextEditingController();
+  final database.DatabaseService _ds = database.DatabaseService();
 
   static Stream<QuerySnapshot> get firestoreChat {
     return _firestore
@@ -37,17 +38,12 @@ class _ChatPageState extends State<ChatPage> {
         .snapshots();
   }
 
-
-
   void onSendMessage() async {
     print("Sending message");
     if (_message.isNotEmpty) {
-      // print("\n\n\n");
-
-      // print(_auth.currentUser?.displayName);
-      // print("\n\n\n");
       Map<String, dynamic> messages = {
-        "sendby": _auth.currentUser?.uid,
+        "sendby_uuid": _auth.currentUser!.uid,
+        "sendby_displayname": _auth.currentUser!.displayName,
         "message": _message,
         "time": FieldValue.serverTimestamp(),
         "chatroomid": Chatroomid,
@@ -57,10 +53,6 @@ class _ChatPageState extends State<ChatPage> {
           .doc(Chatroomid)
           .collection('messages')
           .add(messages);
-      this.setState(() {
-        _message = "";
-       
-      });
     } else {
       print("Enter some text");
     }
@@ -69,49 +61,87 @@ class _ChatPageState extends State<ChatPage> {
   @override
   void initState() {
     super.initState();
+    dynamic childrenTemp = [];
     final subsciber = firestoreChat.listen(
-      (snapshot)  {
+      (snapshot) {
         setState(() {
           String? uuid = _auth.currentUser!.uid.toString();
+          //DocumentReference userList = DatabaseService().getUserSnapshot()
           children = snapshot.docs.map((document) {
-            print(document.data());
+            //print(document.data().toString());
             dynamic result = document.data();
-            //print(result);
-            DatabaseService _ds = DatabaseService();
-            String uuid2 = result['sendby'].toString();
-            //print(uuid2+" is");
-            Map data={};
-            DocumentReference documentReference=_firestore
-                .collection('users').doc(uuid2);
-            documentReference.snapshots().forEach((element) {
-              if(element.data() != null)
-                {
-                  data=element.data() as Map;
-                  //print(data);
-                }
-            });
-            if (uuid == uuid2)
-              {
 
-                return (FlatChatMessage(
-                  Sentby: uuid,
+            String uuid2 = result['sendby_uuid'].toString();
+
+            //Map data = {};
+            //DocumentReference documentReference = _ds.getUserDocument(uuid2);
+            //print(documentReference.);
+            //Future<List<dynamic>> futureList =
+            // List<dynamic> list = [];
+            // documentReference
+            //     .snapshots()
+            //     .map((element) {
+            //       if (element.data() != null) {
+            //         print("Entered if element contains data\n");
+            //         data = element.data() as Map;
+            //         data["message"] = result;
+            //         if (uuid == uuid2) {
+            //           data["messageType"] = MessageType.sent;
+            //         } else {
+            //           data["messageType"] = MessageType.received;
+            //         }
+            //         print("Data in if $data");
+            //       }
+            //     })
+            //     .toList()
+            //     .then(((value) => list.add(value)));
+
+            //futureList.then(((value) => list.add(value)));
+            // print("\The list is =  $list\n");
+            // print("Data not in if $data");
+            //print("User list: " + database.usersData);
+            // for (var v in database.usersData) {
+            //   print("User: $v");
+            // }
+            //List<dynamic> list = futureList.map((element) => element).asList();
+            //futureList.then(() {});
+            //return (list[0] ?? {});
+            print(database.usersData);
+            if (uuid == uuid2) {
+              return FlatChatMessage(
+                Sentby: database.usersData[uuid],
+                //Sentby: uuid,
                 message: result['message'],
                 messageType: MessageType.sent,
-
-              ));
-              }
-            else
-              //print(data["firstName"]);
-              return (FlatChatMessage(
-                //Sentby: data["firstName"].toString(),
-                Sentby: uuid2,
+              );
+            } else {
+              return FlatChatMessage(
+                Sentby: database.usersData[uuid],
+                //Sentby: uuid,
                 message: result['message'],
                 messageType: MessageType.received,
-              ));
+              );
+            }
           }).toList();
+
+          //print(childrenTemp);
+          //children = childrenTemp;
+          //for()
+          // children = childrenTemp.map((messageDataElement) {
+          //   if (messageDataElement != null) {
+          //     print(messageDataElement);
+          //     Map nonFutureDataElement = messageDataElement as Map;
+          //     print(nonFutureDataElement);
+          //     return FlatChatMessage(
+          //       Sentby: nonFutureDataElement['firstName'],
+          //       message: nonFutureDataElement['message']['message'],
+          //       messageType: nonFutureDataElement['messageType'],
+          //     );
+          //   }
+          // }).toList();
         });
       },
-      onDone: () => print("Done"),
+      onDone: () {},
     );
     subsciber.resume();
   }
@@ -150,6 +180,7 @@ class _ChatPageState extends State<ChatPage> {
           onSubmitted: (val) {
             onSendMessage();
             inputTextController.clear();
+            _message = "";
           },
           prefix: FlatActionButton(
             iconData: Icons.add,

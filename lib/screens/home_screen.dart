@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:peergroww/config/palette.dart';
 import 'package:peergroww/widgets/widgets.dart';
-import 'package:peergroww/services/database.dart';
+import 'package:peergroww/services/database.dart' as db;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:peergroww/models/app_user.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
+   
   _HomeScreenState createState() => _HomeScreenState();
 }
 
@@ -16,7 +17,8 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    DatabaseService _ds = DatabaseService();
+    db.startUserListen();
+    db.DatabaseService _ds = db.DatabaseService();
     User? usr = FirebaseAuth.instance.currentUser;
 
     //print("HELLO"+usr!.displayName.toString());
@@ -35,7 +37,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     final screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: CustomAppBar(),
