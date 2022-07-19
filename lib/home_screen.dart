@@ -33,10 +33,16 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     final screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
-      appBar: CustomAppBar(),
+      appBar: AppBar(
+          title: Text('Home',
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 22.0,
+                  fontWeight: FontWeight.bold)),
+          backgroundColor: Palette.primaryColor,
+          elevation: 0.0),
       body: CustomScrollView(
         physics: ClampingScrollPhysics(),
         slivers: <Widget>[

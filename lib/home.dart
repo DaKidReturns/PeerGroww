@@ -1,4 +1,4 @@
-/*import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:peergroww/services/auth.dart';
 
 class Home extends StatefulWidget {
@@ -26,14 +26,13 @@ class _HomeState extends State<Home> {
               },
               child: Text("Logout"),
             ),
-            ElevatedButton(
-              onPressed: () => Navigator.pushNamed(context, '/profile'),
-              child: Text("Profile"),
-            )
+            // ElevatedButton(
+            //   onPressed: () => Navigator.pushNamed(context, '/profile'),
+            //   child: Text("Profile"),
+            // )
           ],
         ),
-        
       )),
     );
   }
-}*/
+}
