@@ -1,15 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:peergroww/home_screen.dart';
-import 'package:peergroww/profile_screen.dart';
-import 'package:peergroww/bottom_nav_screen.dart';
-import 'package:peergroww/teach_screen.dart';
-import 'login.dart';
-import 'home_screen.dart';
-import 'register.dart';
-import 'profile_Screen.dart';
-import 'teach_screen.dart';
+import 'package:peergroww/screens/chat_list.dart';
+import 'package:peergroww/screens/chatpage.dart';
+import 'package:peergroww/screens/home_screen.dart';
+import 'package:peergroww/screens/bottom_nav_screen.dart';
+import 'package:peergroww/screens/login.dart';
+import 'package:peergroww/screens/register.dart';
+import 'package:peergroww/screens/profile.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -38,6 +36,8 @@ class MyApp extends StatelessWidget {
               '/login': (content) => const MyLogin(),
               '/register': (context) => const MyRegister(),
               '/home': (context) => BottomNavScreen(),
+              //'/profile': (context) => Profile(),
+              '/chatpage': (context) => ChatPage()
             },
           );
         });

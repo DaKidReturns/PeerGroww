@@ -1,9 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 
-import 'services/auth.dart';
-import 'widgets/form_fields.dart';
+import 'package:peergroww/services/auth.dart';
+import 'package:peergroww/widgets/form_fields.dart';
 import 'package:flutter/material.dart';
-import 'package:peergroww/loading.dart';
+import 'package:peergroww/widgets/loading.dart';
 
 class MyRegister extends StatefulWidget {
   const MyRegister({Key? key}) : super(key: key);

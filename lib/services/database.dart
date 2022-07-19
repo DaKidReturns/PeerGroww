@@ -1,9 +1,29 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../models/app_user.dart';
 
+Stream<QuerySnapshot> get userNames {
+  return FirebaseFirestore.instance.collection('users').snapshots();
+}
+
+Map usersData = {};
+//static
+void startUserListen() {
+  final subsciber = userNames.listen((snapshot) {
+    //print("Snapshot: $snapshot");
+    snapshot.docs.forEach((element) {
+      //print(element.data());
+      Map data = element.data() as Map;
+      usersData[data['uid']] = data['firstName'];
+    });
+    // Map data = snapshot.docs as Map;
+    // usersData.add(data);
+  });
+}
+
 class DatabaseService {
   // final String uid;
   // DatabaseService({required this.uid});
+  static final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   final CollectionReference userCollection =
       FirebaseFirestore.instance.collection('users');
@@ -12,9 +32,7 @@ class DatabaseService {
       required String email,
       required String firstName,
       required String lastName}) async {
-    return await userCollection
-        .doc(uid)
-        .set({
+    return await userCollection.doc(uid).set({
       'uid': uid,
       'firstName': firstName,
       'lastName': lastName,
@@ -34,5 +52,9 @@ class DatabaseService {
           lastName: userDoc.get('lastName'),
           email: userDoc.get('email'));
     }
+  }
+
+  DocumentReference getUserDocument(String uuid) {
+    return userCollection.doc(uuid);
   }
 }

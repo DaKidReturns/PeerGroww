@@ -9,6 +9,7 @@ class AppUser {
   String? dateOfBirth;
   String? address;
   int? pincode;
+  List<String>? chatIdList;
 
   AppUser(
   {

@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:peergroww/config/palette.dart';
 import 'package:peergroww/widgets/widgets.dart';
-import 'package:peergroww/services/database.dart';
+import 'package:peergroww/services/database.dart' as db;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:peergroww/models/app_user.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
+   
   _HomeScreenState createState() => _HomeScreenState();
 }
 
@@ -16,8 +17,11 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    DatabaseService _ds = DatabaseService();
+    db.startUserListen();
+    db.DatabaseService _ds = db.DatabaseService();
     User? usr = FirebaseAuth.instance.currentUser;
+
+    //print("HELLO"+usr!.displayName.toString());
     if (usr != null) {
       _ds.getUserData(usr.uid).then((value) {
         _user = value as AppUser;
@@ -176,14 +180,14 @@ class _HomeScreenState extends State<HomeScreen> {
           children: <Widget>[
             Image.asset('assets/complete_reg.png'),
             Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Text(
                   'Enjoy Teaching & Learning',
                   style: const TextStyle(
                     color: Colors.white,
-                    fontSize: 18.0,
+                    fontSize: 16.0,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -194,11 +198,11 @@ class _HomeScreenState extends State<HomeScreen> {
                       'Start your new journey of learning\nwith your peers..',
                       style: const TextStyle(
                         color: Colors.white,
-                        fontSize: 14.0,
+                        fontSize: 10.0,
                       ),
                       maxLines: 2,
                     ),
-                    SizedBox(width: 5),
+                    SizedBox(width: 2),
                   ],
                 ),
               ],
