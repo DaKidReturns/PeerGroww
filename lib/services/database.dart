@@ -7,7 +7,7 @@ Stream<QuerySnapshot> get userNames {
 
 Map usersData = {};
 //static
-void startUserListen() {
+void startUserListen() async {
   final subsciber = userNames.listen((snapshot) {
     //print("Snapshot: $snapshot");
     snapshot.docs.forEach((element) {

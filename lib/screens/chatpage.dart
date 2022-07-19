@@ -62,9 +62,22 @@ class _ChatPageState extends State<ChatPage> {
   void initState() {
     super.initState();
     dynamic childrenTemp = [];
+    // final userlistener = database.userNames.listen((snapshot) {
+    //   //print("Snapshot: $snapshot");
+    //   snapshot.docs.forEach((element) {
+    //     //print(element.data());
+    //     Map data = element.data() as Map;
+    //     setState(() {
+    //       database.usersData[data['uid']] = data['firstName'];
+    //     });
+    //   });
+    //   // Map data = snapshot.docs as Map;
+    //   // usersData.add(data);
+    // });
     final subsciber = firestoreChat.listen(
       (snapshot) {
         setState(() {
+          // database.startUserListen();
           String? uuid = _auth.currentUser!.uid.toString();
           //DocumentReference userList = DatabaseService().getUserSnapshot()
           children = snapshot.docs.map((document) {
@@ -73,39 +86,6 @@ class _ChatPageState extends State<ChatPage> {
 
             String uuid2 = result['sendby_uuid'].toString();
 
-            //Map data = {};
-            //DocumentReference documentReference = _ds.getUserDocument(uuid2);
-            //print(documentReference.);
-            //Future<List<dynamic>> futureList =
-            // List<dynamic> list = [];
-            // documentReference
-            //     .snapshots()
-            //     .map((element) {
-            //       if (element.data() != null) {
-            //         print("Entered if element contains data\n");
-            //         data = element.data() as Map;
-            //         data["message"] = result;
-            //         if (uuid == uuid2) {
-            //           data["messageType"] = MessageType.sent;
-            //         } else {
-            //           data["messageType"] = MessageType.received;
-            //         }
-            //         print("Data in if $data");
-            //       }
-            //     })
-            //     .toList()
-            //     .then(((value) => list.add(value)));
-
-            //futureList.then(((value) => list.add(value)));
-            // print("\The list is =  $list\n");
-            // print("Data not in if $data");
-            //print("User list: " + database.usersData);
-            // for (var v in database.usersData) {
-            //   print("User: $v");
-            // }
-            //List<dynamic> list = futureList.map((element) => element).asList();
-            //futureList.then(() {});
-            //return (list[0] ?? {});
             print(database.usersData);
             if (uuid == uuid2) {
               return FlatChatMessage(
