@@ -37,7 +37,7 @@ class MyApp extends StatelessWidget {
               '/register': (context) => const MyRegister(),
               '/home': (context) => BottomNavScreen(),
               //'/profile': (context) => Profile(),
-              '/chatpage': (context) => ChatPage()
+              '/chatpage': (context) => ChatPage('HI')
             },
           );
         });

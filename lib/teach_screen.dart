@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -8,10 +10,17 @@ class Teach extends StatefulWidget {
 
 class _TeachState extends State<Teach> {
   int _currentStep = 0;
+  TextEditingController subject = TextEditingController();
+  TextEditingController topic = TextEditingController();
+  TextEditingController venue = TextEditingController();
+  TextEditingController date = TextEditingController();
+  TextEditingController time = TextEditingController();
+
   StepperType stepperType = StepperType.vertical;
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
+    FirebaseAuth _auth = FirebaseAuth.instance;
     return Container(
         decoration: const BoxDecoration(
             image: DecorationImage(
@@ -38,9 +47,76 @@ class _TeachState extends State<Teach> {
                     type: stepperType,
                     physics: ScrollPhysics(),
                     currentStep: _currentStep,
-                    onStepTapped: (step) => tapped(step),
-                    onStepContinue: continued,
-                    onStepCancel: cancel,
+                    onStepTapped: (step){
+                      print("\n\n\n\nhihhihihi\n\n\n\n");
+                      setState(()=>_currentStep=step);
+                    },
+                    onStepContinue: ()async{
+
+                      print(_currentStep);
+                      print("\n\n\n");
+                      _currentStep < 2 ? setState(() => _currentStep += 1) : null;
+                      if(_currentStep==2 && time.text.isNotEmpty)
+                        {
+                          print("\n\n\n\n"+subject.text+"\n\n\n");
+                          print("\n\n\n\n"+topic.text+"\n\n\n");
+                          print("\n\n\n\n"+venue.text+"\n\n\n");
+                          print("\n\n\n\n"+date.text+"\n\n\n");
+                          print("\n\n\n\n"+time.text+"\n\n\n");
+                          DocumentSnapshot docRef =await FirebaseFirestore.instance.collection('users').doc(_auth.currentUser!.uid.toString()).get();
+                          Map<String,dynamic> data=docRef.data() as Map<String,dynamic>;
+                          //int.parse(data["chatrooms"]);
+
+
+                          List chatrooms=  data['chatrooms'] as List;
+                          int count=int.parse(data['chatrooms'][0]) ;
+                          int flag=0;
+                          for(int i=0;i<count;i++)
+                            {
+                              if(data["chatrooms"][i]==subject.text)
+                                {
+                                  print("\n\n\nhey sup \n\n\n");
+                                  flag=1;
+                                }
+                            }
+
+                          if(flag==0)
+                          {count+=1;
+
+
+
+                          data["chatrooms"][0]=count.toString();
+                          chatrooms.insert( count,subject.text);
+                          await FirebaseFirestore.instance.collection('users').doc(_auth.currentUser!.uid.toString()).update(data);
+                          }
+                          //await FirebaseFirestore.instance.collection('users').doc(_auth.currentUser!.uid.toString()).update();
+                          String? name=_auth.currentUser?.displayName;
+                          String message ="$name is taking ${subject.text} at ${venue.text} on ${date.text}";
+
+                          Map<String, dynamic> messages = {
+                            "sendby_uuid": _auth.currentUser!.uid,
+                            "sendby_displayname": _auth.currentUser!.displayName,
+                            "message": message,
+                            "time": FieldValue.serverTimestamp(),
+                            "chatroomid": subject.text,
+                          };
+
+                           FirebaseFirestore.instance.collection('chatroom').doc(subject.text).collection('messages').doc().set(messages);
+                          Map<String,dynamic> data1=docRef.data() as Map<String,dynamic>;
+                          //int.parse(data["chatrooms"]);
+
+
+
+
+                        }
+
+
+
+                    },
+                    onStepCancel: (){
+                      print("\n\n\n\nHello\n\n\n");
+                      _currentStep > 0 ? setState(() => _currentStep -= 1) : null;
+                    },
                     steps: <Step>[
                       Step(
                         title: new Text(
@@ -53,9 +129,11 @@ class _TeachState extends State<Teach> {
                         content: Column(
                           children: <Widget>[
                             TextFormField(
+                              controller:subject,
                               decoration: InputDecoration(labelText: 'Subject'),
                             ),
                             TextFormField(
+                              controller: topic,
                               decoration: InputDecoration(labelText: 'Topic'),
                             ),
                           ],
@@ -76,6 +154,7 @@ class _TeachState extends State<Teach> {
                         content: Column(
                           children: <Widget>[
                             TextFormField(
+                              controller:venue,
                               decoration: InputDecoration(labelText: 'Venue'),
                             ),
                           ],
@@ -96,9 +175,11 @@ class _TeachState extends State<Teach> {
                         content: Column(
                           children: <Widget>[
                             TextFormField(
+                              controller:date,
                               decoration: InputDecoration(labelText: 'Date'),
                             ),
                             TextFormField(
+                              controller:time,
                               decoration: InputDecoration(labelText: 'Time'),
                             ),
                           ],
@@ -118,7 +199,10 @@ class _TeachState extends State<Teach> {
   }
 
   tapped(int step) {
-    setState(() => _currentStep = step);
+    setState(()  {
+      print("\n\n\n"+subject.text+"\n\n\n");
+      _currentStep = step;});
+
   }
 
   continued() {

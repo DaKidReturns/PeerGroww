@@ -40,7 +40,9 @@ class AuthService {
       if(usr!=null) {
         print("Account created successfully");
         _auth.currentUser!.updateDisplayName(firstName);
+
       }
+
 
 
       return credential;

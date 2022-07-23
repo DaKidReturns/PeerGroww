@@ -1,19 +1,26 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../models/app_user.dart';
-
+import 'dart:convert';
 Stream<QuerySnapshot> get userNames {
   return FirebaseFirestore.instance.collection('users').snapshots();
 }
 
 Map usersData = {};
+Map userdt={};
 //static
-void startUserListen() async {
+void startUserListen()  {
   final subsciber = userNames.listen((snapshot) {
     //print("Snapshot: $snapshot");
     snapshot.docs.forEach((element) {
       //print(element.data());
       Map data = element.data() as Map;
+      //print(data['uid']+"   "+data['chatrooms'][0]);
       usersData[data['uid']] = data['firstName'];
+      userdt[data['uid']]=data;
+      print(usersData[data['uid']]+"   "+userdt[data['uid']]['chatrooms'][0]);
+      int count=int.parse(userdt[data['uid']]['chatrooms'][0]);
+       for(int i=1;i<=count;i++)
+         print("\n\n\n\n"+userdt[data['uid']]['chatrooms'][i]+"\n\n\n\n");
     });
     // Map data = snapshot.docs as Map;
     // usersData.add(data);
@@ -37,6 +44,7 @@ class DatabaseService {
       'firstName': firstName,
       'lastName': lastName,
       'email': email,
+      'chatrooms':["0"],
     });
   }
 

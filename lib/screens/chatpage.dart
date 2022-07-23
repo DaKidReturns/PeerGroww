@@ -13,19 +13,29 @@ import 'package:flutter/material.dart';
 import '../services/database.dart' as database;
 
 class ChatPage extends StatefulWidget {
-  static final String id = "/chatpage";
-
+  String chatroomname="";
+  ChatPage(String chatroom) {
+     this.chatroomname = chatroom;
+     print(chatroomname);
+  }
   @override
-  _ChatPageState createState() => _ChatPageState();
+  _ChatPageState createState() => _ChatPageState(chatroomname);
 }
 
 class _ChatPageState extends State<ChatPage> {
+
+  static String Chatroomid = 'chatroomid';
+  _ChatPageState(String chatroom)
+  {
+   Chatroomid=chatroom;
+  }
+
   String _message = "";
   List<Widget> children = [];
   //final TextEditingController _message = TextEditingController();
   static final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   FirebaseAuth _auth = FirebaseAuth.instance;
-  static final String Chatroomid = 'chatroomid';
+
   final TextEditingController inputTextController = TextEditingController();
   final database.DatabaseService _ds = database.DatabaseService();
 
