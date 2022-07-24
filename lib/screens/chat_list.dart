@@ -55,7 +55,7 @@ class _ChatListPage extends State<ChatListPage> {
 
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) =>  ChatPage(database.userdt[uuid]['chatrooms'][1])),
+                MaterialPageRoute(builder: (context) =>  ChatPage(database.userdt[uuid]['chatrooms'][index+1])),
               );
             },
             name: database.userdt[uuid]['chatrooms'][index+1],

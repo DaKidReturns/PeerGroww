@@ -91,7 +91,7 @@ class _TeachState extends State<Teach> {
                           }
                           //await FirebaseFirestore.instance.collection('users').doc(_auth.currentUser!.uid.toString()).update();
                           String? name=_auth.currentUser?.displayName;
-                          String message ="$name is taking ${subject.text} at ${venue.text} on ${date.text}";
+                          String message ="$name is taking ${topic.text} ( ${subject.text} ) at ${venue.text} on ${date.text}";
 
                           Map<String, dynamic> messages = {
                             "sendby_uuid": _auth.currentUser!.uid,
@@ -105,6 +105,11 @@ class _TeachState extends State<Teach> {
                           Map<String,dynamic> data1=docRef.data() as Map<String,dynamic>;
                           //int.parse(data["chatrooms"]);
 
+                          Map<String, dynamic> newsubject = {
+
+                            "subject": subject.text,
+                          };
+                          FirebaseFirestore.instance.collection('subject').doc(subject.text).set(newsubject);
 
 
 

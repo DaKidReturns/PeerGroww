@@ -148,7 +148,7 @@ class _ChatPageState extends State<ChatPage> {
               Navigator.pop(context);
             },
           ),
-          title: "Group name",
+          title: Chatroomid,
           // suffixWidget: FlatProfileImage(
           //   size: 35.0,
           //   onlineIndicator: true,

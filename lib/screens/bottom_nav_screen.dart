@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:peergroww/profile_screen.dart';
 import 'package:peergroww/screens/screens.dart';
 import 'package:peergroww/teach_screen.dart';
+import 'package:peergroww/search_screen.dart';
 import 'package:peergroww/screens/chat_list.dart';
 
 class BottomNavScreen extends StatefulWidget {
@@ -13,7 +14,7 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
   final List _screens = [
     HomeScreen(),
     Teach(),
-    Scaffold(),
+    Search(),
     ChatListPage(),
     Profile(),
     //ChatListPage(),
