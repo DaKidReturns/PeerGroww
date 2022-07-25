@@ -328,3 +328,7 @@ fabric.properties
 .history/
 
 # End of https://mrkandreev.name/snippets/gitignore-generator/#Dart,Android,Flutter,AndroidStudio,VisualStudioCode
+
+linux/
+web/
+windows/
