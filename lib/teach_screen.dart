@@ -48,13 +48,13 @@ class _TeachState extends State<Teach> {
                     physics: ScrollPhysics(),
                     currentStep: _currentStep,
                     onStepTapped: (step){
-                      print("\n\n\n\nhihhihihi\n\n\n\n");
+                      //print("\n\n\n\nhihhihihi\n\n\n\n");
                       setState(()=>_currentStep=step);
                     },
-                    onStepContinue: ()async{
+                    onStepContinue: () async {
 
-                      print(_currentStep);
-                      print("\n\n\n");
+                      print("Current step: $_currentStep\n");
+                      //print("\n\n\n");
                       _currentStep < 2 ? setState(() => _currentStep += 1) : null;
                       if(_currentStep==2 && time.text.isNotEmpty)
                         {
@@ -63,31 +63,38 @@ class _TeachState extends State<Teach> {
                           print("\n\n\n\n"+venue.text+"\n\n\n");
                           print("\n\n\n\n"+date.text+"\n\n\n");
                           print("\n\n\n\n"+time.text+"\n\n\n");
-                          DocumentSnapshot docRef =await FirebaseFirestore.instance.collection('users').doc(_auth.currentUser!.uid.toString()).get();
+                          DocumentSnapshot docRef = await FirebaseFirestore.instance.collection('users').doc(_auth.currentUser!.uid.toString()).get();
                           Map<String,dynamic> data=docRef.data() as Map<String,dynamic>;
                           //int.parse(data["chatrooms"]);
 
-
+                          //DocumentSnapshot chatdocref = await FirebaseFirestore.instance.collection('chatrooms').doc(_auth.currentUser!.uid.toString()).get();
                           List chatrooms=  data['chatrooms'] as List;
                           int count=int.parse(data['chatrooms'][0]) ;
                           int flag=0;
-                          for(int i=0;i<count;i++)
-                            {
-                              if(data["chatrooms"][i]==subject.text)
-                                {
-                                  print("\n\n\nhey sup \n\n\n");
-                                  flag=1;
-                                }
-                            }
+                          if(chatrooms.contains(subject.text)){
+                            print("\n\nNumber of ${subject.text} = $count\n\n");
+                            flag = 1;
+                          }else{
+                              print("\n\n\nChat not found\n\n\n");
+                          }
+                          // for(int i=0;i<count;i++)
+                          //   {
+                          //     if(data["chatrooms"][i]==subject.text)
+                          //       {
+                          //         print("\n\n\nhey sup \n\n\n");
+                          //         flag=1;
+                          //       }
+                          //   }
 
                           if(flag==0)
-                          {count+=1;
+                          {
+                            count+=1;
 
+                            print("\n\n\nhey sup123 \n\n\n");
 
-
-                          data["chatrooms"][0]=count.toString();
-                          chatrooms.insert( count,subject.text);
-                          await FirebaseFirestore.instance.collection('users').doc(_auth.currentUser!.uid.toString()).update(data);
+                            data["chatrooms"][0]=count.toString();
+                            chatrooms.insert( count,subject.text);
+                            await FirebaseFirestore.instance.collection('users').doc(_auth.currentUser!.uid.toString()).update(data);
                           }
                           //await FirebaseFirestore.instance.collection('users').doc(_auth.currentUser!.uid.toString()).update();
                           String? name=_auth.currentUser?.displayName;
@@ -101,22 +108,29 @@ class _TeachState extends State<Teach> {
                             "chatroomid": subject.text,
                           };
 
-                           FirebaseFirestore.instance.collection('chatroom').doc(subject.text).collection('messages').doc().set(messages);
-                          Map<String,dynamic> data1=docRef.data() as Map<String,dynamic>;
+                            FirebaseFirestore.instance.collection('chatroom').doc(subject.text).collection('messages').doc().set(messages);
+                            Map<String,dynamic> data1=docRef.data() as Map<String,dynamic>;
                           //int.parse(data["chatrooms"]);
 
-                          Map<String, dynamic> newsubject = {
-
-                            "subject": subject.text,
-                          };
+                           Map<String, dynamic> newsubject = {
+                              "subject": subject.text,
+                           };
                           FirebaseFirestore.instance.collection('subject').doc(subject.text).set(newsubject);
-
-
+                          if(flag == 0){
+                            await alertDialog(context,"Group Created successfully");
+                          }
+                          else {
+                            await alertDialog(context,"Study scheduled successfully");
+                          }
+                          setState(() {
+                            subject.clear();
+                            venue.clear();
+                            date.clear();
+                            topic.clear();
+                            time.clear();
+                            _currentStep = 0;});
 
                         }
-
-
-
                     },
                     onStepCancel: (){
                       print("\n\n\n\nHello\n\n\n");
@@ -203,12 +217,6 @@ class _TeachState extends State<Teach> {
         ));
   }
 
-  tapped(int step) {
-    setState(()  {
-      print("\n\n\n"+subject.text+"\n\n\n");
-      _currentStep = step;});
-
-  }
 
   continued() {
     _currentStep < 2 ? setState(() => _currentStep += 1) : null;
@@ -217,4 +225,23 @@ class _TeachState extends State<Teach> {
   cancel() {
     _currentStep > 0 ? setState(() => _currentStep -= 1) : null;
   }
+}
+
+Future<dynamic> alertDialog( BuildContext context,String successMessage) {
+  return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Done'),
+          content: Text(successMessage),
+          actions: <Widget>[
+            ElevatedButton(
+              child: Text('Ok'),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        );
+      });
 }

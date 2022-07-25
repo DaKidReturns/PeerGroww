@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -9,7 +10,7 @@ import 'package:peergroww/widgets/chat_widgets/flat_page_header.dart';
 import 'package:peergroww/widgets/chat_widgets/flat_page_wrapper.dart';
 import 'package:peergroww/widgets/chat_widgets/flat_profile_image.dart';
 import 'package:flutter/material.dart';
-
+import 'package:http/http.dart' as http;
 import '../services/database.dart' as database;
 
 class ChatPage extends StatefulWidget {
@@ -58,6 +59,25 @@ class _ChatPageState extends State<ChatPage> {
         "time": FieldValue.serverTimestamp(),
         "chatroomid": Chatroomid,
       };
+
+
+      String url="https://api.apilayer.com/bad_words?censor_character=";
+      final response=await http.post(Uri.parse(url),
+      headers: {"apikey": "rlGh3JOs5yRhF2DWeD691F6YxlgU1O1j"},
+      body:_message
+      );
+      print("\n\n\n\n\n"+response.body+"\n\n\n\n\n");
+
+      final jsonresponse=jsonDecode(response.body);
+
+      print("\n\n\n\n\n");
+      print(jsonresponse['bad_words_total']);
+      print("\n\n\n\n\n");
+      if(jsonresponse['bad_words_total']>0)
+        {
+          messages['message']="Watch your mouth";
+          print("\n\n\nWatch your mouth\n\n\n\n\n");
+        }
       await _firestore
           .collection('chatroom')
           .doc(Chatroomid)

@@ -39,48 +39,47 @@ class _ChatListPage extends State<ChatListPage> {
           FlatSectionHeader(
             title: "Chats",
           ),
+          ListView.builder(
+              scrollDirection:Axis.vertical ,
+            physics: NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
+            itemCount: int.parse(database.userdt[uuid]['chatrooms'][0]),
+            itemBuilder: (BuildContext context, int index) {
+                return FlatChatItem(
+                  // onPressed: () {
+                  //   Navigator.pushNamed(context, ChatPage.id);
+                  // },
 
+                  onPressed: () {
 
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) =>  ChatPage(database.userdt[uuid]['chatrooms'][index+1])),
+                    );
+                  },
+                  name: database.userdt[uuid]['chatrooms'][index+1],
+                  profileImage: FlatProfileImage(
+                    imageUrl: "",
+                    //"https://cdn.dribbble.com/users/1281912/avatars/normal/febecc326c76154551f9d4bbab73f97b.jpg?1468927304",
+                    onlineIndicator: true,
+                  ),
+                  message:
+                  "Hello World!, Welcome to Flutter.", // get latest message here
+                  multiLineMessage: true,
+                  // counter: FlatCounter(
+                  //   text: "1",
+                  // ),
+                );
+          }),
 
-    ListView.builder(
-    shrinkWrap: true,
-    itemCount: int.parse(database.userdt[uuid]['chatrooms'][0]),
-    itemBuilder: (BuildContext context, int index) {
-          return FlatChatItem(
-            // onPressed: () {
-            //   Navigator.pushNamed(context, ChatPage.id);
-            // },
-
-            onPressed: () {
-
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) =>  ChatPage(database.userdt[uuid]['chatrooms'][index+1])),
-              );
-            },
-            name: database.userdt[uuid]['chatrooms'][index+1],
-            profileImage: FlatProfileImage(
-              imageUrl: "",
-              //"https://cdn.dribbble.com/users/1281912/avatars/normal/febecc326c76154551f9d4bbab73f97b.jpg?1468927304",
-              onlineIndicator: true,
-            ),
-            message:
-            "Hello World!, Welcome to Flutter.", // get latest message here
-            multiLineMessage: true,
-            // counter: FlatCounter(
-            //   text: "1",
-            // ),
-          );
-    }),
-
-          // FlatChatItem(
-          //   profileImage: FlatProfileImage(
-          //     onlineIndicator: true,
-          //     imageUrl: "",
-          //     //"https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=80",
-          //   ),
-          //   name: "DSA learining group",
-          // )
+                // FlatChatItem(
+                //   profileImage: FlatProfileImage(
+                //     onlineIndicator: true,
+                //     imageUrl: "",
+                //     //"https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=80",
+                //   ),
+                //   name: "DSA learining group",
+                // )
 
         ],
       ),

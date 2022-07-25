@@ -140,7 +140,19 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   Column(
                     children: [
-                      Image.asset('assets/learn.png'),
+                      Material(
+                        child: InkWell(
+                          onTap: () {
+
+                          },
+                          child: ClipRRect(
+
+                            child: Image.asset('assets/learn.png',
+                                ),
+                          ),
+                        ),
+                      ),
+                      // Image.asset('assets/learn.png'),
                       SizedBox(
                         height: 5,
                       ),
