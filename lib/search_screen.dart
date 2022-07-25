@@ -23,11 +23,14 @@ class Search extends StatefulWidget {
 
 class _Search extends State<Search> {
   bool searchButton = false;
+  int length=0;
   @override
   TextEditingController search = TextEditingController();
   FirebaseAuth _auth = FirebaseAuth.instance;
   List<Map<String, dynamic>> subjectdata=[];
+
   Widget build(BuildContext context) {
+
     String? uuid = _auth.currentUser!.uid.toString();
     return Scaffold(
       // appBar: AppBar(
@@ -46,18 +49,20 @@ class _Search extends State<Search> {
               });
 
               int index=0;
-              print("\n\n\n" + search.text + "\n\n\n\n\n\n\n\n\n\n\n");
-              QuerySnapshot subjects =
-                  await FirebaseFirestore.instance.collection('subject').get();
-               subjects.docs
-                  .map((doc) {
-              subjectdata.insert(index++, doc.data() as Map<String,dynamic>);
-            }).toList();
-              //print(subjectdata.length);
-
-
-
-
+              if(search.text != "") {
+                print("\n\n"+ search.text + "\n\n");
+                QuerySnapshot subjects =
+                await FirebaseFirestore.instance.collection('subject').get();
+                //print("bitch\n\n");
+                length=subjects.docs.length;
+                subjects.docs
+                    .map((doc) {
+                  if (doc.exists) print(doc.data());
+                  subjectdata.insert(
+                      index++, doc.data() as Map<String, dynamic>);
+                }).toList();
+                //print(subjectdata.length);
+              }
             },
           ),
 
@@ -76,9 +81,16 @@ class _Search extends State<Search> {
           // ],),
         ),
         children: [
-          TextFormField(
-            controller: search,
-            decoration: InputDecoration(labelText: ''),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10.0),
+            child: TextFormField(
+              controller: search,
+              decoration: InputDecoration(hintText: 'Search for peer groups',
+                  hintStyle: TextStyle(color: Color.fromARGB(100, 80, 80, 80)),
+                  border: OutlineInputBorder(borderSide: BorderSide(width: 20)),
+              ),
+
+            ),
           ),
           FlatSectionHeader(
             title: "",
@@ -86,7 +98,7 @@ class _Search extends State<Search> {
 
           searchButton?ListView.builder(
               shrinkWrap: true,
-              itemCount: 4,
+              itemCount: length,
               itemBuilder: (BuildContext context, int index) {
                 bool check=false;
 
@@ -94,21 +106,52 @@ class _Search extends State<Search> {
                     int searchlen=search.text.length;
                     for(int j=0;j<subjectdata[index]['subject'].length-len;j++)
                     {
+
+                      //print("HIHIHI\n\n\n"+subjectdata[index]['subject']+"\n\n\n");
                       String result=subjectdata[index]['subject'].substring(j,searchlen+j);
                       if(result==search.text)
                         {
                           check=true;
+
                         }
                     }
-
-
                 if(check==true)
                 {return FlatChatItem(
                   // onPressed: () {
                   //   Navigator.pushNamed(context, ChatPage.id);
                   // },
 
-                  onPressed: () {
+                  onPressed: () async {
+
+
+                    DocumentSnapshot docRef =await FirebaseFirestore.instance.collection('users').doc(_auth.currentUser!.uid.toString()).get();
+                    Map<String,dynamic> data=docRef.data() as Map<String,dynamic>;
+                    //int.parse(data["chatrooms"]);
+
+
+                    List chatrooms=  data['chatrooms'] as List;
+                    int count=int.parse(data['chatrooms'][0]) ;
+                    int flag=0;
+                    for(int i=0;i<count;i++)
+                    {
+                      if(data["chatrooms"][i]==subjectdata[index]['subject'])
+                      {
+                        print("\n\n\nhey sup \n\n\n");
+                        flag=1;
+                      }
+                    }
+
+                    if(flag==0)
+                    {count+=1;
+
+
+
+                    data["chatrooms"][0]=count.toString();
+                    chatrooms.insert( count,subjectdata[index]['subject']);
+                    await FirebaseFirestore.instance.collection('users').doc(_auth.currentUser!.uid.toString()).update(data);
+                    }
+
+
                     Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -123,7 +166,7 @@ class _Search extends State<Search> {
                     onlineIndicator: true,
                   ),
                   message:
-                      "Hello World!, Welcome to Flutter.", // get latest message here
+                      "Just tap here to start learning ${subjectdata[index]["subject"]}", // get latest message here
                   multiLineMessage: true,
                   // counter: FlatCounter(
                   //   text: "1",

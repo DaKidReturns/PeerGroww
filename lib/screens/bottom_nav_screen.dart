@@ -4,6 +4,8 @@ import 'package:peergroww/screens/screens.dart';
 import 'package:peergroww/teach_screen.dart';
 import 'package:peergroww/search_screen.dart';
 import 'package:peergroww/screens/chat_list.dart';
+import 'package:peergroww/updateprofile.dart';
+
 
 class BottomNavScreen extends StatefulWidget {
   @override
@@ -17,6 +19,7 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
     Search(),
     ChatListPage(),
     Profile(),
+    Update(),
     //ChatListPage(),
   ];
   int _currentIndex = 0;
@@ -40,7 +43,8 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
           Icons.playlist_add_outlined,
           Icons.book,
           Icons.chat,
-          Icons.account_circle
+          Icons.account_circle,
+          Icons.data_saver_off,
         ]
             .asMap()
             .map((key, value) => MapEntry(

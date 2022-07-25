@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../models/app_user.dart';
 import 'dart:convert';
+
 Stream<QuerySnapshot> get userNames {
   return FirebaseFirestore.instance.collection('users').snapshots();
 }
@@ -45,6 +46,8 @@ class DatabaseService {
       'lastName': lastName,
       'email': email,
       'chatrooms':["0"],
+      'institution':"",
+      'skills':["0"],
     });
   }
 

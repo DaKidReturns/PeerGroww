@@ -8,7 +8,7 @@ import 'package:peergroww/screens/bottom_nav_screen.dart';
 import 'package:peergroww/screens/login.dart';
 import 'package:peergroww/screens/register.dart';
 import 'package:peergroww/screens/profile.dart';
-
+import 'package:peergroww/updateprofile.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
