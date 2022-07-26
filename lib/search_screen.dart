@@ -22,10 +22,10 @@ class Search extends StatefulWidget {
 }
 
 class _Search extends State<Search> {
-  bool searchButton = false;
+  bool searchButton = true;
   int length=0;
   @override
-  TextEditingController search = TextEditingController();
+  TextEditingController search = TextEditingController(text: "");
   FirebaseAuth _auth = FirebaseAuth.instance;
   List<Map<String, dynamic>> subjectdata=[];
 
@@ -84,6 +84,7 @@ class _Search extends State<Search> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10.0),
             child: TextFormField(
+
               controller: search,
               decoration: InputDecoration(hintText: 'Search for peer groups',
                   hintStyle: TextStyle(color: Color.fromARGB(100, 80, 80, 80)),
@@ -99,11 +100,14 @@ class _Search extends State<Search> {
           searchButton?ListView.builder(
               shrinkWrap: true,
               itemCount: length,
+              scrollDirection:Axis.vertical ,
+              physics: NeverScrollableScrollPhysics(),
               itemBuilder: (BuildContext context, int index) {
                 bool check=false;
 
                     int len=min(subjectdata[index]['subject'].length,search.text.length);
                     int searchlen=search.text.length;
+
                     for(int j=0;j<subjectdata[index]['subject'].length-len;j++)
                     {
 
@@ -116,7 +120,9 @@ class _Search extends State<Search> {
                         }
                     }
                 if(check==true)
-                {return FlatChatItem(
+                {
+
+                  return FlatChatItem(
                   // onPressed: () {
                   //   Navigator.pushNamed(context, ChatPage.id);
                   // },
@@ -171,7 +177,8 @@ class _Search extends State<Search> {
                   // counter: FlatCounter(
                   //   text: "1",
                   // ),
-                );}
+                );
+                }
                 else
                   {
                     return SizedBox();
