@@ -59,6 +59,7 @@ class _Update extends State<Update> {
                       print(_currentStep);
                       print("\n\n\n");
                       _currentStep < 1 ? setState(() => _currentStep += 1) : null;
+                      int flag=0;
                       if(_currentStep==1 )
                       {
 
@@ -141,8 +142,11 @@ class _Update extends State<Update> {
 
 
 
-
-
+                      if(skill.text.isNotEmpty)
+                        {
+                          await alertDialog(
+                              context, "Profile Updated Successfully");
+                          }
                       }
 
 
@@ -213,4 +217,24 @@ class _Update extends State<Update> {
 
 
 
+}
+
+
+Future<dynamic> alertDialog( BuildContext context,String successMessage) {
+  return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Done'),
+          content: Text(successMessage),
+          actions: <Widget>[
+            ElevatedButton(
+              child: Text('Ok'),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        );
+      });
 }
