@@ -31,9 +31,9 @@ class _ChatListPage extends State<ChatListPage> {
         scrollType: ScrollType.floatingHeader,
         header: FlatPageHeader(
           title: "Group Chats",
-          suffixWidget: FlatActionButton(
-            iconData: Icons.search,
-          ),
+          // suffixWidget: FlatActionButton(
+          //   iconData: Icons.search,
+          // ),
         ),
         children: [
           FlatSectionHeader(

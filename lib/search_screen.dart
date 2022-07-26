@@ -130,7 +130,7 @@ class _Search extends State<Search> {
 
                 }
 
-                if(j>sbjt.length-3 && sbjt.length>=4)
+                if(j>sbjt.length-3 && sbjt.length>=3)
                 {
                   check=true;
                 }

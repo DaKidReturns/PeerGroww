@@ -56,9 +56,11 @@ class _TeachState extends State<Teach> {
                       print("Current step: $_currentStep\n");
                       //print("\n\n\n");
                       _currentStep < 2 ? setState(() => _currentStep += 1) : null;
-                      if(_currentStep==2 && time.text.isNotEmpty)
+                      if(_currentStep==2 && time.text.isNotEmpty && topic.text.isNotEmpty
+                      && subject.text.isNotEmpty  && date.text.isNotEmpty  &&  venue.text.isNotEmpty)
                         {
                           print("\n\n\n\n"+subject.text+"\n\n\n");
+                          subject.text=subject.text.toLowerCase();
                           print("\n\n\n\n"+topic.text+"\n\n\n");
                           print("\n\n\n\n"+venue.text+"\n\n\n");
                           print("\n\n\n\n"+date.text+"\n\n\n");
@@ -66,6 +68,7 @@ class _TeachState extends State<Teach> {
                           DocumentSnapshot docRef = await FirebaseFirestore.instance.collection('users').doc(_auth.currentUser!.uid.toString()).get();
                           Map<String,dynamic> data=docRef.data() as Map<String,dynamic>;
                           //int.parse(data["chatrooms"]);
+
 
                           //DocumentSnapshot chatdocref = await FirebaseFirestore.instance.collection('chatrooms').doc(_auth.currentUser!.uid.toString()).get();
                           List chatrooms=  data['chatrooms'] as List;
@@ -93,7 +96,7 @@ class _TeachState extends State<Teach> {
                             print("\n\n\nhey sup123 \n\n\n");
 
                             data["chatrooms"][0]=count.toString();
-                            chatrooms.insert( count,subject.text);
+                            chatrooms.insert( count,subject.text.toLowerCase());
                             await FirebaseFirestore.instance.collection('users').doc(_auth.currentUser!.uid.toString()).update(data);
                           }
                           //await FirebaseFirestore.instance.collection('users').doc(_auth.currentUser!.uid.toString()).update();
