@@ -24,6 +24,7 @@ class Search extends StatefulWidget {
 class _Search extends State<Search> {
   bool searchButton = true;
   int length=0;
+  String didyoumean="";
   @override
   TextEditingController search = TextEditingController(text: "");
   FirebaseAuth _auth = FirebaseAuth.instance;
@@ -106,19 +107,63 @@ class _Search extends State<Search> {
                 bool check=false;
 
                     int len=min(subjectdata[index]['subject'].length,search.text.length);
-                    int searchlen=search.text.length;
 
-                    for(int j=0;j<subjectdata[index]['subject'].length-len;j++)
+
+
+                    String sbjt=subjectdata[index]['subject'];
+                    String searchtext=search.text;
+                int i=0;
+                int last=0;
+                int j=0;
+                int flag=0;
+                while(i<sbjt.length && j<searchtext.length)
+                {
+                  if(sbjt[i]==searchtext[j])
+                  {
+                    if(i-last<=2)
                     {
-
-                      //print("HIHIHI\n\n\n"+subjectdata[index]['subject']+"\n\n\n");
-                      String result=subjectdata[index]['subject'].substring(j,searchlen+j);
-                      if(result==search.text)
-                        {
-                          check=true;
-
-                        }
+                      last=i;
+                      j++;
                     }
+                  }
+                  i++;
+
+                }
+
+                if(j>sbjt.length-3 && sbjt.length>=4)
+                {
+                  check=true;
+                }
+                else if(j>sbjt.length-1 )
+                  {
+                    check=true;
+                  }
+                print("\n\n\n\n\n J =");
+                print(j);
+                print("\n\n\n\n\n");
+
+
+                int searchlen=search.text.length;
+
+                for(int j=0;j<subjectdata[index]['subject'].length-len;j++)
+                {
+
+                  //print("HIHIHI\n\n\n"+subjectdata[index]['subject']+"\n\n\n");
+                  String result=subjectdata[index]['subject'].substring(j,searchlen+j);
+                  if(result==search.text)
+                  {
+                    check=true;
+
+                  }
+                }
+
+                if(subjectdata[index]['subject']==search.text)
+                {print("\n\n\n\n\n\n");
+                print(len);
+                print("\n\n\n\n\n\n");
+                check=true;
+                }
+
                 if(check==true)
                 {
 
@@ -146,6 +191,8 @@ class _Search extends State<Search> {
                         flag=1;
                       }
                     }
+
+
 
                     if(flag==0)
                     {count+=1;

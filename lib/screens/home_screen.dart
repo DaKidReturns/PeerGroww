@@ -4,6 +4,8 @@ import 'package:peergroww/widgets/widgets.dart';
 import 'package:peergroww/services/database.dart' as db;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:peergroww/models/app_user.dart';
+import 'package:peergroww/teach_screen.dart';
+import 'package:peergroww/search_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -128,7 +130,22 @@ class _HomeScreenState extends State<HomeScreen> {
                 children: <Widget>[
                   Column(
                     children: [
-                      Image.asset('assets/learn_1.png'),
+                      //Image.asset('assets/learn_1.png'),
+                      Material(
+                        child: InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) =>  Search()),
+                            );
+                          },
+                          child: ClipRRect(
+
+                            child: Image.asset('assets/learn_1.png',
+                            ),
+                          ),
+                        ),
+                      ),
                       Text(
                         'Learn',
                         style: const TextStyle(
@@ -143,7 +160,10 @@ class _HomeScreenState extends State<HomeScreen> {
                       Material(
                         child: InkWell(
                           onTap: () {
-
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) =>  Teach()),
+                            );
                           },
                           child: ClipRRect(
 
